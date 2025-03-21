@@ -22,7 +22,13 @@ const chart = LightweightCharts.createChart(chartContainer, {
 
 const candleSeries = chart.addCandlestickSeries();
 
-// Fetch and display candlestick data
+// Initialize the heatmap
+const heatmapCanvas = document.getElementById('heatmap');
+const ctx = heatmapCanvas.getContext('2d');
+heatmapCanvas.width = heatmapCanvas.clientWidth;
+heatmapCanvas.height = 200;
+
+// Fetch and display candlestick data and heatmap
 async function loadChartData() {
     try {
         const response = await fetch(`${API_URL}/api/candles`);
@@ -35,6 +41,32 @@ async function loadChartData() {
             close: parseFloat(candle.mid.c),
         }));
         candleSeries.setData(chartData);
+
+        // Calculate heatmap data (simplified: volume and price direction)
+        const heatmapData = data.map(candle => {
+            const volume = parseInt(candle.volume);
+            const isBullish = parseFloat(candle.mid.c) > parseFloat(candle.mid.o);
+            return {
+                price: parseFloat(candle.mid.c),
+                volume: volume,
+                color: isBullish ? 'rgba(0, 255, 0, 0.5)' : 'rgba(255, 0, 0, 0.5)', // Green for buying, red for selling
+            };
+        });
+
+        // Draw heatmap
+        const priceRange = Math.max(...heatmapData.map(d => d.price)) - Math.min(...heatmapData.map(d => d.price));
+        const priceMin = Math.min(...heatmapData.map(d => d.price));
+        const barWidth = heatmapCanvas.width / heatmapData.length;
+        ctx.clearRect(0, 0, heatmapCanvas.width, heatmapCanvas.height);
+        heatmapData.forEach((data, i) => {
+            const x = i * barWidth;
+            const y = ((data.price - priceMin) / priceRange) * (heatmapCanvas.height - 20);
+            const intensity = Math.min(data.volume / 1000, 1); // Scale volume for intensity
+            ctx.fillStyle = data.color;
+            ctx.globalAlpha = intensity;
+            ctx.fillRect(x, heatmapCanvas.height - y, barWidth, 5);
+        });
+        ctx.globalAlpha = 1.0;
     } catch (error) {
         console.error('Error loading chart data:', error);
     }
