@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-gray-900 text-white">
+    <nav class="bg-gray-800 p-4">
+        <ul class="flex space-x-4">
+            <li><a href="index.html" class="text-blue-400">Dashboard</a></li>
+            <li><a href="backtest.html" class="text-blue-400">Backtest</a></li>
+            <li><a href="settings.html" class="text-blue-400">Settings</a></li>
+        </ul>
+    </nav>
+    <div class="container mx-auto p-6">
+        <h1 class="text-3xl mb-6">Settings</h1>
+        <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+            <form>
+                <label class="block mb-2">Oanda API Key:</label>
+                <input type="text" class="bg-gray-700 p-2 rounded w-full" placeholder="Enter API Key" />
+                <label class="block mb-2 mt-4">Oanda Account ID:</label>
+                <input type="text" class="bg-gray-700 p-2 rounded w-full" placeholder="Enter Account ID" />
+                <label class="block mb-2 mt-4">Daily Loss Cap (%):</label>
+                <input type="number" class="bg-gray-700 p-2 rounded w-full" value="3" />
+                <label class="block mb-2 mt-4">Risk Per Trade (%):</label>
+                <input type="number" class="bg-gray-700 p-2 rounded w-full" value="0.6" />
+                <button type="submit" class="bg-blue-500 p-2 rounded mt-4 w-full">Save Settings</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
