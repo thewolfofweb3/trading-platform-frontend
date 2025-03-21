@@ -1,5 +1,5 @@
 // API base URL
-const API_URL = https://trading-platform-backend-vert.vercel.app/
+const API_URL = 'https://trading-platform-backend-vert.vercel.app';
 
 // Initialize the chart
 const chartContainer = document.getElementById('chart');
