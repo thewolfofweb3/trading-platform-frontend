@@ -1,5 +1,5 @@
-// API base URL (replace with your Vercel URL after deployment)
-const API_URL = 'https://trading-bot-backend.vercel.app'; // Replace with your Vercel URL
+// API base URL
+const API_URL = https://trading-platform-backend-vert.vercel.app/
 
 // Initialize the chart
 const chartContainer = document.getElementById('chart');
@@ -77,7 +77,7 @@ async function loadChartData() {
         // Calculate heatmap data (simplified: volume and price direction)
         const heatmapData = candles.map(candle => {
             const volume = parseInt(candle.volume);
-            const isBullish = parseFloat(candle.mid.c) > parseFloat(candle.mid.o);
+            const isBullish = candle.isBullish;
             return {
                 price: parseFloat(candle.mid.c),
                 volume: volume,
