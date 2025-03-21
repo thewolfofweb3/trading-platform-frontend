@@ -28,12 +28,12 @@ const ctx = heatmapCanvas.getContext('2d');
 heatmapCanvas.width = heatmapCanvas.clientWidth;
 heatmapCanvas.height = 200;
 
-// Fetch and display candlestick data and heatmap
+// Fetch and display candlestick data, Fibonacci levels, and session levels
 async function loadChartData() {
     try {
         const response = await fetch(`${API_URL}/api/candles`);
-        const data = await response.json();
-        const chartData = data.map(candle => ({
+        const { candles, sessionHigh, sessionLow, fibLevels } = await response.json();
+        const chartData = candles.map(candle => ({
             time: new Date(candle.time).getTime() / 1000,
             open: parseFloat(candle.mid.o),
             high: parseFloat(candle.mid.h),
@@ -42,8 +42,40 @@ async function loadChartData() {
         }));
         candleSeries.setData(chartData);
 
+        // Add session high and low lines
+        if (sessionHigh) {
+            chart.addLineSeries({ color: 'red', lineWidth: 1 }).setData([
+                { time: chartData[0].time, value: sessionHigh },
+                { time: chartData[chartData.length - 1].time, value: sessionHigh },
+            ]);
+        }
+        if (sessionLow) {
+            chart.addLineSeries({ color: 'green', lineWidth: 1 }).setData([
+                { time: chartData[0].time, value: sessionLow },
+                { time: chartData[chartData.length - 1].time, value: sessionLow },
+            ]);
+        }
+
+        // Add Fibonacci levels
+        if (fibLevels) {
+            const fibSeries = [
+                { level: fibLevels.fib_0, color: 'purple' },
+                { level: fibLevels.fib_236, color: 'blue' },
+                { level: fibLevels.fib_382, color: 'cyan' },
+                { level: fibLevels.fib_500, color: 'yellow' },
+                { level: fibLevels.fib_618, color: 'orange' },
+                { level: fibLevels.fib_100, color: 'purple' },
+            ];
+            fibSeries.forEach(fib => {
+                chart.addLineSeries({ color: fib.color, lineWidth: 1 }).setData([
+                    { time: chartData[0].time, value: fib.level },
+                    { time: chartData[chartData.length - 1].time, value: fib.level },
+                ]);
+            });
+        }
+
         // Calculate heatmap data (simplified: volume and price direction)
-        const heatmapData = data.map(candle => {
+        const heatmapData = candles.map(candle => {
             const volume = parseInt(candle.volume);
             const isBullish = parseFloat(candle.mid.c) > parseFloat(candle.mid.o);
             return {
