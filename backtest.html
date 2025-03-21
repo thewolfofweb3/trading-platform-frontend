@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Backtesting</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-gray-900 text-white">
+    <nav class="bg-gray-800 p-4">
+        <ul class="flex space-x-4">
+            <li><a href="index.html" class="text-blue-400">Dashboard</a></li>
+            <li><a href="backtest.html" class="text-blue-400">Backtest</a></li>
+            <li><a href="settings.html" class="text-blue-400">Settings</a></li>
+        </ul>
+    </nav>
+    <div class="container mx-auto p-6">
+        <h1 class="text-3xl mb-6">Backtesting</h1>
+        <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+            <form class="mb-4">
+                <label class="block mb-2">Instrument (MNQ/MES):</label>
+                <select class="bg-gray-700 p-2 rounded w-full">
+                    <option>MNQ</option>
+                    <option>MES</option>
+                </select>
+                <label class="block mb-2 mt-4">Date Range:</label>
+                <input type="date" class="bg-gray-700 p-2 rounded w-full" />
+                <button type="submit" class="bg-blue-500 p-2 rounded mt-4 w-full">Run Backtest</button>
+            </form>
+            <table class="w-full text-left">
+                <thead>
+                    <tr>
+                        <th class="p-2">Metric</th>
+                        <th class="p-2">Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="p-2">Win Rate</td>
+                        <td class="p-2">55%</td>
+                    </tr>
+                    <tr>
+                        <td class="p-2">Profit Factor</td>
+                        <td class="p-2">1.8</td>
+                    </tr>
+                    <tr>
+                        <td class="p-2">Max Drawdown</td>
+                        <td class="p-2">4%</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
