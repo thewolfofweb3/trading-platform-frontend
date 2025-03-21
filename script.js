@@ -1,5 +1,46 @@
 // API base URL (replace with your Vercel URL after deployment)
-const API_URL = 'http://localhost:5000'; // Change to https://trading-bot-backend.vercel.app after deployment
+const API_URL = 'https://trading-bot-backend.vercel.app'; // Replace with your Vercel URL
+
+// Initialize the chart
+const chartContainer = document.getElementById('chart');
+const chart = LightweightCharts.createChart(chartContainer, {
+    width: chartContainer.clientWidth,
+    height: 400,
+    layout: {
+        backgroundColor: '#1F2937',
+        textColor: '#D1D5DB',
+    },
+    grid: {
+        vertLines: { color: '#374151' },
+        horzLines: { color: '#374151' },
+    },
+    timeScale: {
+        timeVisible: true,
+        secondsVisible: false,
+    },
+});
+
+const candleSeries = chart.addCandlestickSeries();
+
+// Fetch and display candlestick data
+async function loadChartData() {
+    try {
+        const response = await fetch(`${API_URL}/api/candles`);
+        const data = await response.json();
+        const chartData = data.map(candle => ({
+            time: new Date(candle.time).getTime() / 1000,
+            open: parseFloat(candle.mid.o),
+            high: parseFloat(candle.mid.h),
+            low: parseFloat(candle.mid.l),
+            close: parseFloat(candle.mid.c),
+        }));
+        candleSeries.setData(chartData);
+    } catch (error) {
+        console.error('Error loading chart data:', error);
+    }
+}
+
+loadChartData();
 
 // Start trading
 document.getElementById('start-trading').addEventListener('click', async () => {
