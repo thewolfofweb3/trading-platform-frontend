@@ -17,18 +17,31 @@
     </nav>
     <div class="container mx-auto p-6">
         <h1 class="text-3xl mb-6">Settings</h1>
-        <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
-            <form>
-                <label class="block mb-2">Oanda API Key:</label>
-                <input type="text" class="bg-gray-700 p-2 rounded w-full" placeholder="Enter API Key" />
-                <label class="block mb-2 mt-4">Oanda Account ID:</label>
-                <input type="text" class="bg-gray-700 p-2 rounded w-full" placeholder="Enter Account ID" />
-                <label class="block mb-2 mt-4">Daily Loss Cap (%):</label>
-                <input type="number" class="bg-gray-700 p-2 rounded w-full" value="3" />
-                <label class="block mb-2 mt-4">Risk Per Trade (%):</label>
-                <input type="number" class="bg-gray-700 p-2 rounded w-full" value="0.6" />
-                <button type="submit" class="bg-blue-500 p-2 rounded mt-4 w-full">Save Settings</button>
-            </form>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+                <h2 class="text-xl mb-4">Oanda Credentials</h2>
+                <form>
+                    <label class="block mb-2">Oanda API Key:</label>
+                    <input type="text" class="bg-gray-700 p-2 rounded w-full" placeholder="Enter API Key" />
+                    <label class="block mb-2 mt-4">Oanda Account ID:</label>
+                    <input type="text" class="bg-gray-700 p-2 rounded w-full" placeholder="Enter Account ID" />
+                    <button type="submit" class="bg-blue-500 p-2 rounded mt-4 w-full">Save Credentials</button>
+                </form>
+            </div>
+            <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+                <h2 class="text-xl mb-4">Trading Parameters</h2>
+                <form>
+                    <label class="block mb-2">Daily Loss Cap (%):</label>
+                    <input type="number" class="bg-gray-700 p-2 rounded w-full" value="3" />
+                    <label class="block mb-2 mt-4">Risk Per Trade (%):</label>
+                    <input type="number" class="bg-gray-700 p-2 rounded w-full" value="0.6" />
+                    <label class="block mb-2 mt-4">Trading Start Time (ET):</label>
+                    <input type="time" class="bg-gray-700 p-2 rounded w-full" value="09:45" />
+                    <label class="block mb-2 mt-4">Trading End Time (ET):</label>
+                    <input type="time" class="bg-gray-700 p-2 rounded w-full" value="15:30" />
+                    <button type="submit" class="bg-blue-500 p-2 rounded mt-4 w-full">Save Parameters</button>
+                </form>
+            </div>
         </div>
     </div>
 </body>
