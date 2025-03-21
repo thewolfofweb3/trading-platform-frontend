@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trading Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-gray-900 text-white">
+    <nav class="bg-gray-800 p-4">
+        <ul class="flex space-x-4">
+            <li><a href="index.html" class="text-blue-400">Dashboard</a></li>
+            <li><a href="backtest.html" class="text-blue-400">Backtest</a></li>
+            <li><a href="settings.html" class="text-blue-400">Settings</a></li>
+        </ul>
+    </nav>
+    <div class="container mx-auto p-6">
+        <h1 class="text-3xl mb-6">Trading Dashboard</h1>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+                <h2 class="text-xl mb-4">Account Status</h2>
+                <p id="account-balance">Daily Loss: $0 | Trades Today: 0</p>
+                <button id="start-trading" class="bg-blue-500 p-2 rounded mt-4 w-full">Start Auto-Trading</button>
+                <button id="stop-trading" class="bg-red-500 p-2 rounded mt-2 w-full">Stop Trading</button>
+            </div>
+            <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+                <h2 class="text-xl mb-4">Trade Log</h2>
+                <div id="trade-log" class="h-64 overflow-y-auto"></div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
