@@ -17,17 +17,29 @@
     </nav>
     <div class="container mx-auto p-6">
         <h1 class="text-3xl mb-6">Backtesting</h1>
-        <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
-            <form class="mb-4">
-                <label class="block mb-2">Instrument (MNQ/MES):</label>
-                <select class="bg-gray-700 p-2 rounded w-full">
-                    <option>MNQ</option>
-                    <option>MES</option>
-                </select>
-                <label class="block mb-2 mt-4">Date Range:</label>
-                <input type="date" class="bg-gray-700 p-2 rounded w-full" />
-                <button type="submit" class="bg-blue-500 p-2 rounded mt-4 w-full">Run Backtest</button>
-            </form>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+                <h2 class="text-xl mb-4">Run a Backtest</h2>
+                <form class="mb-4">
+                    <label class="block mb-2">Instrument (MNQ/MES):</label>
+                    <select class="bg-gray-700 p-2 rounded w-full">
+                        <option>MNQ</option>
+                        <option>MES</option>
+                    </select>
+                    <label class="block mb-2 mt-4">Date Range:</label>
+                    <input type="date" class="bg-gray-700 p-2 rounded w-full" />
+                    <button type="submit" class="bg-blue-500 p-2 rounded mt-4 w-full">Run Backtest</button>
+                </form>
+            </div>
+            <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+                <h2 class="text-xl mb-4">Backtest Results</h2>
+                <p class="text-gray-400">Run a backtest to see the results here.</p>
+                <div class="mt-4">
+                    <p><strong>Status:</strong> Not yet run</p>
+                    <p><strong>Trades Executed:</strong> 0</p>
+                    <p><strong>Profit/Loss:</strong> $0</p>
+                </div>
+            </div>
         </div>
     </div>
 </body>
