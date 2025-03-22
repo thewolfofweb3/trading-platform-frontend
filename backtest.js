@@ -1,4 +1,3 @@
-// frontend/src/scripts/backtest.js
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('backtest-form');
     const chartContainer = document.getElementById('chart-container');
@@ -10,10 +9,17 @@ document.addEventListener('DOMContentLoaded', () => {
         chart = LightweightCharts.createChart(chartContainer, {
             width: chartContainer.clientWidth,
             height: 400,
-            layout: { backgroundColor: '#ffffff', textColor: '#000000' },
+            layout: { backgroundColor: '#0B1A2F', textColor: '#E0E7E9' },
             timeScale: { timeVisible: true }
         });
-        candleSeries = chart.addCandlestickSeries();
+        candleSeries = chart.addCandlestickSeries({
+            upColor: '#00C4B4',
+            downColor: '#FF6F61',
+            borderUpColor: '#00C4B4',
+            borderDownColor: '#FF6F61',
+            wickUpColor: '#00C4B4',
+            wickDownColor: '#FF6F61',
+        });
     } else {
         console.error('Chart container not found');
     }
