@@ -39,6 +39,9 @@ if (chartContainer) {
     ctx = heatmapCanvas.getContext('2d');
     heatmapCanvas.width = heatmapCanvas.clientWidth;
     heatmapCanvas.height = 200;
+
+    // Load initial chart data
+    loadChartData(new Date(Date.now() - 50 * 5 * 60 * 1000).toISOString().split('T')[0]);
 }
 
 // Fetch and display candlestick data, Fibonacci levels, and session levels (for dashboard)
@@ -46,8 +49,13 @@ async function loadChartData(startDate) {
     try {
         const response = await fetch(`${API_URL}/api/candles?startDate=${startDate}`);
         const { candles, sessionHigh, sessionLow, fibLevels } = await response.json();
+        if (!candles || candles.length === 0) {
+            console.error('No candles received from /api/candles');
+            return;
+        }
+
         const chartData = candles.map(candle => ({
-            time: new Date(candle.time).getTime() / 1000,
+            time: Math.floor(new Date(candle.time).getTime() / 1000), // Convert to Unix timestamp in seconds
             open: parseFloat(candle.open),
             high: parseFloat(candle.high),
             low: parseFloat(candle.low),
@@ -88,15 +96,11 @@ async function loadChartData(startDate) {
         }
 
         // Calculate heatmap data (simplified: volume and price direction)
-        const heatmapData = candles.map(candle => {
-            const volume = parseInt(candle.volume);
-            const isBullish = candle.isBullish;
-            return {
-                price: parseFloat(candle.close),
-                volume: volume,
-                color: isBullish ? 'rgba(0, 196, 180, 0.7)' : 'rgba(255, 111, 97, 0.7)', // Teal for buying, coral for selling
-            };
-        });
+        const heatmapData = candles.map(candle => ({
+            price: parseFloat(candle.close),
+            volume: parseInt(candle.volume),
+            color: candle.isBullish ? 'rgba(0, 196, 180, 0.7)' : 'rgba(255, 111, 97, 0.7)', // Teal for buying, coral for selling
+        }));
 
         // Draw heatmap
         const priceRange = Math.max(...heatmapData.map(d => d.price)) - Math.min(...heatmapData.map(d => d.price));
