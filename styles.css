@@ -6,14 +6,14 @@
 
 /* Custom Styles */
 body {
-    font-family: 'Montserrat', sans-serif; /* Modern, readable font */
-    background: linear-gradient(135deg, #1C2526, #2E3A3B); /* Cool gray gradient */
+    font-family: 'Montserrat', sans-serif;
+    background: linear-gradient(135deg, #1F2937, #374151); /* Cooler, darker gray gradient */
 }
 
 #trade-log, #trade-indicators {
     max-height: 300px;
     overflow-y: auto;
-    scrollbar-color: #00C4B4 #2E3A3B; /* Custom scrollbar */
+    scrollbar-color: #00C4B4 #374151; /* Custom scrollbar */
     scrollbar-width: thin;
 }
 
@@ -22,7 +22,7 @@ body {
 }
 
 #trade-log::-webkit-scrollbar-track, #trade-indicators::-webkit-scrollbar-track {
-    background: #2E3A3B;
+    background: #374151;
 }
 
 #trade-log::-webkit-scrollbar-thumb, #trade-indicators::-webkit-scrollbar-thumb {
@@ -42,5 +42,5 @@ th, td {
 }
 
 th {
-    background-color: #1C2526;
+    background-color: #1F2937;
 }
