@@ -4,6 +4,7 @@ body {
     font-family: 'Montserrat', sans-serif;
     background: linear-gradient(135deg, #0B1A2F, #1F2937);
     color: #E0E7E9;
+    margin: 0;
 }
 
 nav {
@@ -29,7 +30,7 @@ nav a:hover {
 }
 
 .container {
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
     padding: 2rem;
 }
@@ -55,11 +56,12 @@ button {
     padding: 0.5rem 1rem;
     border-radius: 0.25rem;
     cursor: pointer;
-    transition: box-shadow 0.3s;
+    transition: box-shadow 0.3s, transform 0.3s;
 }
 
 button:hover {
     box-shadow: 0 0 15px #26D0CE;
+    transform: scale(1.05);
 }
 
 table {
@@ -75,8 +77,9 @@ th, td {
 }
 
 th {
-    background: #1F2937;
+    background: linear-gradient(135deg, #1F2937, #374151);
     color: #D1D5DB;
+    text-shadow: 0 0 5px #00C4B4;
 }
 
 td {
@@ -86,4 +89,22 @@ td {
 #chart {
     border: 1px solid #00C4B4;
     box-shadow: 0 0 10px #00C4B4;
+}
+
+.sidebar {
+    min-width: 250px;
+}
+
+.main-content {
+    flex-grow: 1;
+}
+
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+    .sidebar, .main-content {
+        width: 100%;
+        padding-left: 0;
+    }
 }
