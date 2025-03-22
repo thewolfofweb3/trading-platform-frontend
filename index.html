@@ -33,9 +33,25 @@
                 <button id="start-trading" class="bg-[#00C4B4] hover:shadow-[0_0_15px_#26D0CE] p-2 rounded mt-2 w-full text-[#1C2526] transition-all duration-300 border border-[#26D0CE]">Start Auto-Trading</button>
                 <button id="stop-trading" class="bg-[#FF6F61] hover:shadow-[0_0_15px_#FF8A80] p-2 rounded mt-2 w-full text-[#1C2526] transition-all duration-300 border border-[#FF8A80]">Stop Trading</button>
             </div>
-            <div class="bg-[#2E3A3B] p-6 rounded-lg shadow-lg md:col-span-3 border border-[#00C4B4] border-opacity-20">
-                <h2 class="text-xl mb-4 text-[#A3BFFA]">Trade Log</h2>
-                <div id="trade-log" class="h-64 overflow-y-auto"></div>
+        </div>
+        <div class="bg-[#2E3A3B] p-6 rounded-lg shadow-lg mt-6 border border-[#00C4B4] border-opacity-20">
+            <h2 class="text-xl mb-4 text-[#A3BFFA]">Trade Log</h2>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left">
+                    <thead>
+                        <tr class="text-[#A3BFFA]">
+                            <th class="p-2">Timestamp</th>
+                            <th class="p-2">Signal</th>
+                            <th class="p-2">Entry Price</th>
+                            <th class="p-2">Units</th>
+                            <th class="p-2">Stop Loss</th>
+                            <th class="p-2">Take Profit</th>
+                        </tr>
+                    </thead>
+                    <tbody id="trade-log">
+                        <!-- Trade signals will be displayed here -->
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
