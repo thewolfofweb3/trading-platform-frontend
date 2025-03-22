@@ -1,68 +1,65 @@
+<!-- frontend/public/backtest.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Backtesting</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Backtesting Dashboard</title>
+    <link rel="stylesheet" href="/styles.css">
+    <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
 </head>
-<body class="bg-[#1F2937] text-[#FFFFFF]">
-    <nav class="bg-[#374151] p-4">
-        <ul class="flex space-x-4">
-            <li><a href="index.html" class="text-[#42A5F5] hover:text-blue-400">Dashboard</a></li>
-            <li><a href="backtest.html" class="text-[#42A5F5] hover:text-blue-400">Backtest</a></li>
-            <li><a href="settings.html" class="text-[#42A5F5] hover:text-blue-400">Settings</a></li>
-        </ul>
-    </nav>
-    <div class="container mx-auto p-6 flex">
-        <div class="sidebar bg-[#374151] p-6 rounded-lg shadow-lg border border-[#00C4B4] border-opacity-20 w-1/4">
-            <h2 class="text-xl mb-4 text-[#D1D5DB]">Run a Backtest</h2>
-            <form id="backtest-form" class="mb-4">
-                <label class="block mb-2 text-[#D1D5DB]">Instrument:</label>
-                <select id="instrument" class="bg-[#1F2937] p-2 rounded w-full text-[#FFFFFF] border border-[#00C4B4]">
+<body>
+    <header>
+        <nav>
+            <a href="/dashboard">Dashboard</a>
+            <a href="/backtest" class="active">Backtest</a>
+            <a href="/settings">Settings</a>
+        </nav>
+    </header>
+    <main>
+        <section class="backtest-form">
+            <h1>Run a Backtest</h1>
+            <form id="backtest-form">
+                <label for="instrument">Instrument</label>
+                <select id="instrument">
                     <option value="MNQ">MNQ</option>
-                    <option value="MES">MES</option>
+                    <option value="ES">ES</option>
                 </select>
-                <label class="block mb-2 mt-4 text-[#D1D5DB]">Strategy:</label>
-                <select id="strategy" class="bg-[#1F2937] p-2 rounded w-full text-[#FFFFFF] border border-[#00C4B4]">
-                    <option value="ictScalping">ICT Scalping</option>
-                    <option value="maCrossover">Moving Average Crossover</option>
-                    <option value="bollingerSqueeze">Bollinger Band Squeeze</option>
+                <label for="strategy">Strategy</label>
+                <select id="strategy">
+                    <option value="ict-scalping">ICT Scalping</option>
+                    <option value="momentum">Momentum</option>
                 </select>
-                <label class="block mb-2 mt-4 text-[#D1D5DB]">Start Date:</label>
-                <input type="date" id="start-date" class="bg-[#1F2937] p-2 rounded w-full text-[#FFFFFF] border border-[#00C4B4]" />
-                <button type="submit" class="bg-[#00C4B4] hover:shadow-[0_0_15px_#26D0CE] p-2 rounded mt-4 w-full text-[#1F2937]">Run Backtest</button>
+                <label for="start-date">Start Date</label>
+                <input type="date" id="start-date" required>
+                <button type="submit">Run Backtest</button>
             </form>
-        </div>
-        <div class="main-content w-3/4 pl-6">
-            <div class="bg-[#374151] p-6 rounded-lg shadow-lg border border-[#00C4B4] border-opacity-20 mb-6">
-                <h2 class="text-xl mb-4 text-[#D1D5DB]">Backtest Results</h2>
-                <p id="backtest-status" class="text-[#D1D5DB]">Run a backtest to see results.</p>
-                <div class="mt-4">
-                    <p><strong>Status:</strong> <span id="status">Not yet run</span></p>
-                    <p><strong>Trades Executed:</strong> <span id="trades-executed">0</span></p>
-                    <p><strong>Profit/Loss:</strong> <span id="profit-loss">$0</span></p>
-                </div>
-            </div>
-            <div class="bg-[#374151] p-6 rounded-lg shadow-lg border border-[#00C4B4] border-opacity-20">
-                <h2 class="text-xl mb-4 text-[#D1D5DB]">Trade Indicators</h2>
-                <table class="w-full text-left">
-                    <thead>
-                        <tr class="text-[#D1D5DB]">
-                            <th class="p-2">Timestamp</th>
-                            <th class="p-2">Signal</th>
-                            <th class="p-2">Entry Price</th>
-                            <th class="p-2">Units</th>
-                            <th class="p-2">Stop Loss</th>
-                            <th class="p-2">Take Profit</th>
-                            <th class="p-2">Profit/Loss</th>
-                        </tr>
-                    </thead>
-                    <tbody id="trade-indicators"></tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-    <script src="script.js"></script>
+        </section>
+        <section class="backtest-results">
+            <h1>Backtest Results</h1>
+            <p id="status">Not yet run</p>
+            <p id="trades-executed">Trades Executed: 0</p>
+            <p id="profit-loss">Profit/Loss: $0</p>
+            <div id="chart-container"></div>
+        </section>
+        <section class="trade-indicators">
+            <h1>Trade Indicators</h1>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Timestamp</th>
+                        <th>Signal</th>
+                        <th>Entry Price</th>
+                        <th>Units</th>
+                        <th>Stop Loss</th>
+                        <th>Take Profit</th>
+                        <th>Profit/Loss</th>
+                    </tr>
+                </thead>
+                <tbody id="trade-indicators-body"></tbody>
+            </table>
+        </section>
+    </main>
+    <script src="/scripts/backtest.js"></script>
 </body>
 </html>
