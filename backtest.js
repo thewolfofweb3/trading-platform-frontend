@@ -28,6 +28,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const today = new Date().toISOString().split('T')[0];
 
         // Validate date
+        if (!startDate) {
+            document.getElementById('status').textContent = 'Error: Please select a start date.';
+            return;
+        }
         if (startDate >= today) {
             document.getElementById('status').textContent = 'Error: Please select a past date.';
             return;
@@ -35,16 +39,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
         document.getElementById('status').textContent = 'Running backtest...';
         try {
-            const response = await fetch('/api/backtest', {
+            console.log('Sending backtest request:', { instrument, strategy, startDate });
+            const response = await fetch('https://trading-platform-backend-vert.vercel.app/api/backtest', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ instrument, strategy, startDate })
             });
-            const result = await response.json();
 
             if (!response.ok) {
-                throw new Error(result.error || 'Backtest failed');
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Backtest failed');
             }
+
+            const result = await response.json();
+            console.log('Backtest result:', result);
 
             // Update results
             document.getElementById('status').textContent = 'Backtest completed.';
@@ -54,22 +62,26 @@ document.addEventListener('DOMContentLoaded', () => {
             // Populate table
             const tableBody = document.getElementById('trade-indicators-body');
             tableBody.innerHTML = '';
-            result.trades.forEach(trade => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${trade.timestamp}</td>
-                    <td>${trade.signal}</td>
-                    <td>${trade.entryPrice}</td>
-                    <td>${trade.units}</td>
-                    <td>${trade.stopLoss}</td>
-                    <td>${trade.takeProfit}</td>
-                    <td>${trade.profitLoss >= 0 ? '+' : ''}${trade.profitLoss.toFixed(2)}</td>
-                `;
-                tableBody.appendChild(row);
-            });
+            if (result.trades.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="7">No trades executed.</td></tr>';
+            } else {
+                result.trades.forEach(trade => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${trade.timestamp}</td>
+                        <td>${trade.signal}</td>
+                        <td>${trade.entryPrice}</td>
+                        <td>${trade.units}</td>
+                        <td>${trade.stopLoss}</td>
+                        <td>${trade.takeProfit}</td>
+                        <td>${trade.profitLoss >= 0 ? '+' : ''}${trade.profitLoss.toFixed(2)}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            }
 
             // Update chart
-            if (candleSeries) {
+            if (candleSeries && result.chartData) {
                 candleSeries.setData(result.chartData);
             }
         } catch (error) {
