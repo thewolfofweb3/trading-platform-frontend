@@ -7,8 +7,8 @@
     <script src="https://unpkg.com/lightweight-charts@4.1.0/dist/lightweight-charts.standalone.production.js"></script>
     <link rel="stylesheet" href="styles.css">
 </head>
-<body class="bg-[#1C2526] text-[#E0E7E9]">
-    <nav class="bg-[#2E3A3B] p-4">
+<body class="bg-[#1F2937] text-[#FFFFFF]">
+    <nav class="bg-[#374151] p-4">
         <ul class="flex space-x-4">
             <li><a href="index.html" class="text-[#42A5F5] hover:text-blue-400 transition-all duration-300">Dashboard</a></li>
             <li><a href="backtest.html" class="text-[#42A5F5] hover:text-blue-400 transition-all duration-300">Backtest</a></li>
@@ -18,28 +18,28 @@
     <div class="container mx-auto p-6">
         <h1 class="text-3xl mb-6">Trading Dashboard</h1>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="bg-[#2E3A3B] p-6 rounded-lg shadow-lg md:col-span-2 border border-[#00C4B4] border-opacity-20">
-                <h2 class="text-xl mb-4 text-[#A3BFFA]">MNQ 5-Minute Chart</h2>
+            <div class="bg-[#374151] p-6 rounded-lg shadow-lg md:col-span-2 border border-[#00C4B4] border-opacity-20">
+                <h2 class="text-xl mb-4 text-[#D1D5DB]">MNQ 5-Minute Chart</h2>
                 <div id="chart" style="width: 100%; height: 400px;"></div>
-                <h2 class="text-xl mt-6 mb-4 text-[#A3BFFA]">Liquidity Heatmap</h2>
+                <h2 class="text-xl mt-6 mb-4 text-[#D1D5DB]">Liquidity Heatmap</h2>
                 <canvas id="heatmap" style="width: 100%; height: 200px;"></canvas>
             </div>
-            <div class="bg-[#2E3A3B] p-6 rounded-lg shadow-lg border border-[#00C4B4] border-opacity-20">
-                <h2 class="text-xl mb-4 text-[#A3BFFA]">Account Status</h2>
+            <div class="bg-[#374151] p-6 rounded-lg shadow-lg border border-[#00C4B4] border-opacity-20">
+                <h2 class="text-xl mb-4 text-[#D1D5DB]">Account Status</h2>
                 <p id="account-balance">Daily Loss: $0 | Trades Today: 0</p>
-                <label class="block mb-2 mt-4 text-[#A3BFFA]">Start Date for Analysis:</label>
-                <input type="date" id="start-date" class="bg-[#1C2526] p-2 rounded w-full text-[#E0E7E9] border border-[#00C4B4] border-opacity-20" />
-                <button id="fetch-signals" class="bg-[#00C4B4] hover:shadow-[0_0_15px_#26D0CE] p-2 rounded mt-4 w-full text-[#1C2526] transition-all duration-300 border border-[#26D0CE]">Fetch Trade Signals</button>
-                <button id="start-trading" class="bg-[#00C4B4] hover:shadow-[0_0_15px_#26D0CE] p-2 rounded mt-2 w-full text-[#1C2526] transition-all duration-300 border border-[#26D0CE]">Start Auto-Trading</button>
-                <button id="stop-trading" class="bg-[#FF6F61] hover:shadow-[0_0_15px_#FF8A80] p-2 rounded mt-2 w-full text-[#1C2526] transition-all duration-300 border border-[#FF8A80]">Stop Trading</button>
+                <label class="block mb-2 mt-4 text-[#D1D5DB]">Start Date for Analysis:</label>
+                <input type="date" id="start-date" class="bg-[#1F2937] p-2 rounded w-full text-[#FFFFFF] border border-[#00C4B4] border-opacity-20" />
+                <button id="fetch-signals" class="bg-[#00C4B4] hover:shadow-[0_0_15px_#26D0CE] p-2 rounded mt-4 w-full text-[#1F2937] transition-all duration-300 border border-[#26D0CE]">Fetch Trade Signals</button>
+                <button id="start-trading" class="bg-[#00C4B4] hover:shadow-[0_0_15px_#26D0CE] p-2 rounded mt-2 w-full text-[#1F2937] transition-all duration-300 border border-[#26D0CE]">Start Auto-Trading</button>
+                <button id="stop-trading" class="bg-[#FF6F61] hover:shadow-[0_0_15px_#FF8A80] p-2 rounded mt-2 w-full text-[#1F2937] transition-all duration-300 border border-[#FF8A80]">Stop Trading</button>
             </div>
         </div>
-        <div class="bg-[#2E3A3B] p-6 rounded-lg shadow-lg mt-6 border border-[#00C4B4] border-opacity-20">
-            <h2 class="text-xl mb-4 text-[#A3BFFA]">Trade Log</h2>
+        <div class="bg-[#374151] p-6 rounded-lg shadow-lg mt-6 border border-[#00C4B4] border-opacity-20">
+            <h2 class="text-xl mb-4 text-[#D1D5DB]">Trade Log</h2>
             <div class="overflow-x-auto">
                 <table class="w-full text-left">
                     <thead>
-                        <tr class="text-[#A3BFFA]">
+                        <tr class="text-[#D1D5DB]">
                             <th class="p-2">Timestamp</th>
                             <th class="p-2">Signal</th>
                             <th class="p-2">Entry Price</th>
