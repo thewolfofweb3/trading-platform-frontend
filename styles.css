@@ -1,16 +1,19 @@
 /* Load a pre-built Tailwind CSS file */
 @import url('https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css');
 
+/* Custom Futuristic Font */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+
 /* Custom Styles */
 body {
     font-family: 'Orbitron', sans-serif; /* Futuristic font */
-    background: linear-gradient(135deg, #0A0A0B, #1A1A2E); /* Gradient background */
+    background: linear-gradient(135deg, #1C2526, #2E3A3B); /* Cool gray gradient */
 }
 
 #trade-log, #trade-indicators {
     max-height: 300px;
     overflow-y: auto;
-    scrollbar-color: #00D4FF #1A1A2E; /* Custom scrollbar */
+    scrollbar-color: #00C4B4 #2E3A3B; /* Custom scrollbar */
     scrollbar-width: thin;
 }
 
@@ -19,10 +22,10 @@ body {
 }
 
 #trade-log::-webkit-scrollbar-track, #trade-indicators::-webkit-scrollbar-track {
-    background: #1A1A2E;
+    background: #2E3A3B;
 }
 
 #trade-log::-webkit-scrollbar-thumb, #trade-indicators::-webkit-scrollbar-thumb {
-    background: #00D4FF;
+    background: #00C4B4;
     border-radius: 4px;
 }
