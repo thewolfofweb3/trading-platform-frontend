@@ -9,9 +9,9 @@
 <body class="bg-[#1F2937] text-[#FFFFFF]">
     <nav class="bg-[#374151] p-4">
         <ul class="flex space-x-4">
-            <li><a href="index.html" class="text-[#42A5F5] hover:text-blue-400 transition-all duration-300">Dashboard</a></li>
-            <li><a href="backtest.html" class="text-[#42A5F5] hover:text-blue-400 transition-all duration-300">Backtest</a></li>
-            <li><a href="settings.html" class="text-[#42A5F5] hover:text-blue-400 transition-all duration-300">Settings</a></li>
+            <li><a href="index.html" class="text-[#42A5F5] hover:text-blue-400">Dashboard</a></li>
+            <li><a href="backtest.html" class="text-[#42A5F5] hover:text-blue-400">Backtest</a></li>
+            <li><a href="settings.html" class="text-[#42A5F5] hover:text-blue-400">Settings</a></li>
         </ul>
     </nav>
     <div class="container mx-auto p-6">
@@ -20,19 +20,25 @@
             <div class="bg-[#374151] p-6 rounded-lg shadow-lg border border-[#00C4B4] border-opacity-20">
                 <h2 class="text-xl mb-4 text-[#D1D5DB]">Run a Backtest</h2>
                 <form id="backtest-form" class="mb-4">
-                    <label class="block mb-2 text-[#D1D5DB]">Instrument (MNQ/MES):</label>
-                    <select id="instrument" class="bg-[#1F2937] p-2 rounded w-full text-[#FFFFFF] border border-[#00C4B4] border-opacity-20">
-                        <option value="MNQ">MNQ (Micro E-mini Nasdaq-100)</option>
-                        <option value="MES">MES (Micro E-mini S&P 500)</option>
+                    <label class="block mb-2 text-[#D1D5DB]">Instrument:</label>
+                    <select id="instrument" class="bg-[#1F2937] p-2 rounded w-full text-[#FFFFFF] border border-[#00C4B4]">
+                        <option value="MNQ">MNQ</option>
+                        <option value="MES">MES</option>
+                    </select>
+                    <label class="block mb-2 mt-4 text-[#D1D5DB]">Strategy:</label>
+                    <select id="strategy" class="bg-[#1F2937] p-2 rounded w-full text-[#FFFFFF] border border-[#00C4B4]">
+                        <option value="ictScalping">ICT Scalping</option>
+                        <option value="maCrossover">Moving Average Crossover</option>
+                        <option value="bollingerSqueeze">Bollinger Band Squeeze</option>
                     </select>
                     <label class="block mb-2 mt-4 text-[#D1D5DB]">Start Date:</label>
-                    <input type="date" id="start-date" class="bg-[#1F2937] p-2 rounded w-full text-[#FFFFFF] border border-[#00C4B4] border-opacity-20" />
-                    <button type="submit" class="bg-[#00C4B4] hover:shadow-[0_0_15px_#26D0CE] p-2 rounded mt-4 w-full text-[#1F2937] transition-all duration-300 border border-[#26D0CE]">Run Backtest</button>
+                    <input type="date" id="start-date" class="bg-[#1F2937] p-2 rounded w-full text-[#FFFFFF] border border-[#00C4B4]" />
+                    <button type="submit" class="bg-[#00C4B4] hover:shadow-[0_0_15px_#26D0CE] p-2 rounded mt-4 w-full text-[#1F2937]">Run Backtest</button>
                 </form>
             </div>
             <div class="bg-[#374151] p-6 rounded-lg shadow-lg border border-[#00C4B4] border-opacity-20">
                 <h2 class="text-xl mb-4 text-[#D1D5DB]">Backtest Results</h2>
-                <p id="backtest-status" class="text-[#D1D5DB]">Run a backtest to see the results here.</p>
+                <p id="backtest-status" class="text-[#D1D5DB]">Run a backtest to see results.</p>
                 <div class="mt-4">
                     <p><strong>Status:</strong> <span id="status">Not yet run</span></p>
                     <p><strong>Trades Executed:</strong> <span id="trades-executed">0</span></p>
@@ -42,24 +48,20 @@
         </div>
         <div class="bg-[#374151] p-6 rounded-lg shadow-lg mt-6 border border-[#00C4B4] border-opacity-20">
             <h2 class="text-xl mb-4 text-[#D1D5DB]">Trade Indicators</h2>
-            <div class="overflow-x-auto">
-                <table class="w-full text-left">
-                    <thead>
-                        <tr class="text-[#D1D5DB]">
-                            <th class="p-2">Timestamp</th>
-                            <th class="p-2">Signal</th>
-                            <th class="p-2">Entry Price</th>
-                            <th class="p-2">Units</th>
-                            <th class="p-2">Stop Loss</th>
-                            <th class="p-2">Take Profit</th>
-                            <th class="p-2">Profit/Loss</th>
-                        </tr>
-                    </thead>
-                    <tbody id="trade-indicators">
-                        <!-- Trade signals will be displayed here -->
-                    </tbody>
-                </table>
-            </div>
+            <table class="w-full text-left">
+                <thead>
+                    <tr class="text-[#D1D5DB]">
+                        <th class="p-2">Timestamp</th>
+                        <th class="p-2">Signal</th>
+                        <th class="p-2">Entry Price</th>
+                        <th class="p-2">Units</th>
+                        <th class="p-2">Stop Loss</th>
+                        <th class="p-2">Take Profit</th>
+                        <th class="p-2">Profit/Loss</th>
+                    </tr>
+                </thead>
+                <tbody id="trade-indicators"></tbody>
+            </table>
         </div>
     </div>
     <script src="script.js"></script>
