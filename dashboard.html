@@ -1,0 +1,23 @@
+<!-- frontend/public/dashboard.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/styles.css">
+    <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
+</head>
+<body>
+    <nav>
+        <a href="/dashboard.html">Dashboard</a>
+        <a href="/backtest.html">Backtest</a>
+    </nav>
+    <div class="container">
+        <h1>Real-Time Dashboard</h1>
+        <div id="chart-container"></div>
+    </div>
+    <script src="/src/scripts/dashboard.js"></script>
+</body>
+</html>
