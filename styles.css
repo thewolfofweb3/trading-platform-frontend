@@ -36,7 +36,7 @@ main {
     justify-content: center;
 }
 
-.backtest-form, .backtest-results, .trade-indicators {
+.backtest-form, .backtest-results, .trade-indicators, .settings-form {
     background: rgba(31, 41, 55, 0.9);
     padding: 2rem;
     border-radius: 1rem;
@@ -65,7 +65,7 @@ label {
     color: #D1D5DB;
 }
 
-select, input[type="date"] {
+select, input[type="date"], input[type="text"], input[type="number"], input[type="time"], input[type="checkbox"] {
     background: #2E3A3B;
     color: #E0E7E9;
     border: 1px solid #00C4B4;
@@ -74,7 +74,7 @@ select, input[type="date"] {
     transition: box-shadow 0.3s;
 }
 
-select:focus, input[type="date"]:focus {
+select:focus, input:focus {
     outline: none;
     box-shadow: 0 0 10px #00C4B4;
 }
