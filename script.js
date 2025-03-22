@@ -4,6 +4,8 @@ const API_URL = 'https://trading-platform-backend-vert.vercel.app';
 // Initialize the chart (for dashboard)
 const chartContainer = document.getElementById('chart');
 let chart, candleSeries, heatmapCanvas, ctx;
+let isTrading = false;
+let tradingInterval;
 
 if (chartContainer) {
     chart = LightweightCharts.createChart(chartContainer, {
@@ -11,11 +13,11 @@ if (chartContainer) {
         height: 400,
         layout: {
             backgroundColor: '#0B1A2F', // Deep navy
-            textColor: '#D1D5DB', // Light gray
+            textColor: '#E0E7E9', // Soft off-white
         },
         grid: {
-            vertLines: { color: '#2A3B5A' }, // Muted navy
-            horzLines: { color: '#2A3B5A' }, // Muted navy
+            vertLines: { color: '#2E3A3B' }, // Cool gray
+            horzLines: { color: '#2E3A3B' }, // Cool gray
         },
         timeScale: {
             timeVisible: true,
@@ -24,12 +26,12 @@ if (chartContainer) {
     });
 
     candleSeries = chart.addCandlestickSeries({
-        upColor: '#39FF14', // Neon green for bullish
-        downColor: '#FF073A', // Neon red for bearish
-        borderUpColor: '#39FF14',
-        borderDownColor: '#FF073A',
-        wickUpColor: '#39FF14',
-        wickDownColor: '#FF073A',
+        upColor: '#00C4B4', // Teal for bullish
+        downColor: '#FF6F61', // Coral for bearish
+        borderUpColor: '#00C4B4',
+        borderDownColor: '#FF6F61',
+        wickUpColor: '#00C4B4',
+        wickDownColor: '#FF6F61',
     });
 
     // Initialize the heatmap
@@ -55,13 +57,13 @@ async function loadChartData(startDate) {
 
         // Add session high and low lines
         if (sessionHigh) {
-            chart.addLineSeries({ color: '#FF073A', lineWidth: 1 }).setData([
+            chart.addLineSeries({ color: '#FF6F61', lineWidth: 1 }).setData([
                 { time: chartData[0].time, value: sessionHigh },
                 { time: chartData[chartData.length - 1].time, value: sessionHigh },
             ]);
         }
         if (sessionLow) {
-            chart.addLineSeries({ color: '#39FF14', lineWidth: 1 }).setData([
+            chart.addLineSeries({ color: '#00C4B4', lineWidth: 1 }).setData([
                 { time: chartData[0].time, value: sessionLow },
                 { time: chartData[chartData.length - 1].time, value: sessionLow },
             ]);
@@ -70,12 +72,12 @@ async function loadChartData(startDate) {
         // Add Fibonacci levels
         if (fibLevels) {
             const fibSeries = [
-                { level: fibLevels.fib_0, color: '#FF00FF' }, // Neon magenta
-                { level: fibLevels.fib_236, color: '#00D4FF' }, // Neon blue
-                { level: fibLevels.fib_382, color: '#39FF14' }, // Neon green
-                { level: fibLevels.fib_500, color: '#FFFF00' }, // Neon yellow
-                { level: fibLevels.fib_618, color: '#FF073A' }, // Neon red
-                { level: fibLevels.fib_100, color: '#FF00FF' }, // Neon magenta
+                { level: fibLevels.fib_0, color: '#42A5F5' }, // Electric blue
+                { level: fibLevels.fib_236, color: '#00C4B4' }, // Teal
+                { level: fibLevels.fib_382, color: '#26A69A' }, // Muted teal
+                { level: fibLevels.fib_500, color: '#FFCA28' }, // Golden yellow
+                { level: fibLevels.fib_618, color: '#FF6F61' }, // Coral
+                { level: fibLevels.fib_100, color: '#42A5F5' }, // Electric blue
             ];
             fibSeries.forEach(fib => {
                 chart.addLineSeries({ color: fib.color, lineWidth: 1 }).setData([
@@ -92,7 +94,7 @@ async function loadChartData(startDate) {
             return {
                 price: parseFloat(candle.close),
                 volume: volume,
-                color: isBullish ? 'rgba(57, 255, 20, 0.7)' : 'rgba(255, 7, 58, 0.7)', // Neon green for buying, neon red for selling
+                color: isBullish ? 'rgba(0, 196, 180, 0.7)' : 'rgba(255, 111, 97, 0.7)', // Teal for buying, coral for selling
             };
         });
 
@@ -115,7 +117,7 @@ async function loadChartData(startDate) {
     }
 }
 
-// Fetch trade signals for dashboard
+// Fetch trade signals for dashboard (single fetch)
 if (document.getElementById('fetch-signals')) {
     document.getElementById('fetch-signals').addEventListener('click', async () => {
         const startDate = document.getElementById('start-date').value;
@@ -141,20 +143,46 @@ if (document.getElementById('fetch-signals')) {
     });
 }
 
-// Start auto-trading (for future use with funded account)
+// Start auto-trading (real-time loop)
 if (document.getElementById('start-trading')) {
     document.getElementById('start-trading').addEventListener('click', async () => {
-        try {
-            const response = await fetch(`${API_URL}/api/start-trading`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' }
-            });
-            const result = await response.json();
-            const tradeLog = document.getElementById('trade-log');
-            tradeLog.innerHTML += `<p>${new Date(result.timestamp).toLocaleString()}: ${result.message}${result.signal ? ' - Signal: ' + result.signal : ''}${result.units ? ' - Units: ' + result.units : ''}${result.stopLoss ? ' - Stop Loss: ' + result.stopLoss : ''}${result.takeProfit ? ' - Take Profit: ' + result.takeProfit : ''}</p>`;
-        } catch (error) {
-            console.error('Error starting trading:', error);
+        if (isTrading) {
+            alert('Trading is already running.');
+            return;
         }
+
+        isTrading = true;
+        const tradeLog = document.getElementById('trade-log');
+        tradeLog.innerHTML += `<p>${new Date().toLocaleString()}: Trading started.</p>`;
+
+        tradingInterval = setInterval(async () => {
+            try {
+                const response = await fetch(`${API_URL}/api/start-trading`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                const result = await response.json();
+                tradeLog.innerHTML += `<p>${new Date(result.timestamp).toLocaleString()}: ${result.message}${result.signal ? ' - Signal: ' + result.signal : ''}${result.units ? ' - Units: ' + result.units : ''}${result.stopLoss ? ' - Stop Loss: ' + result.stopLoss : ''}${result.takeProfit ? ' - Take Profit: ' + result.takeProfit : ''}</p>`;
+            } catch (error) {
+                console.error('Error during auto-trading:', error);
+                tradeLog.innerHTML += `<p>${new Date().toLocaleString()}: Error during trading: ${error.message}</p>`;
+            }
+        }, 5 * 60 * 1000); // Fetch every 5 minutes
+    });
+}
+
+// Stop auto-trading
+if (document.getElementById('stop-trading')) {
+    document.getElementById('stop-trading').addEventListener('click', () => {
+        if (!isTrading) {
+            alert('Trading is not running.');
+            return;
+        }
+
+        isTrading = false;
+        clearInterval(tradingInterval);
+        const tradeLog = document.getElementById('trade-log');
+        tradeLog.innerHTML += `<p>${new Date().toLocaleString()}: Trading stopped.</p>`;
     });
 }
 
