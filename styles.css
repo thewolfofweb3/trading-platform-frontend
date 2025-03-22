@@ -3,10 +3,26 @@
 
 /* Custom Styles */
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Orbitron', sans-serif; /* Futuristic font */
+    background: linear-gradient(135deg, #0A0A0B, #1A1A2E); /* Gradient background */
 }
 
-#trade-log {
+#trade-log, #trade-indicators {
     max-height: 300px;
     overflow-y: auto;
+    scrollbar-color: #00D4FF #1A1A2E; /* Custom scrollbar */
+    scrollbar-width: thin;
+}
+
+#trade-log::-webkit-scrollbar, #trade-indicators::-webkit-scrollbar {
+    width: 8px;
+}
+
+#trade-log::-webkit-scrollbar-track, #trade-indicators::-webkit-scrollbar-track {
+    background: #1A1A2E;
+}
+
+#trade-log::-webkit-scrollbar-thumb, #trade-indicators::-webkit-scrollbar-thumb {
+    background: #00D4FF;
+    border-radius: 4px;
 }
