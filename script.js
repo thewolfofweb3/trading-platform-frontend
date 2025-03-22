@@ -137,9 +137,16 @@ if (document.getElementById('fetch-signals')) {
             });
             const result = await response.json();
             const tradeLog = document.getElementById('trade-log');
-            tradeLog.innerHTML += `<p>${new Date(result.timestamp).toLocaleString()}: ${result.message}${result.signal ? ' - Signal: ' + result.signal : ''}${result.units ? ' - Units: ' + result.units : ''}${result.stopLoss ? ' - Stop Loss: ' + result.stopLoss : ''}${result.takeProfit ? ' - Take Profit: ' + result.takeProfit : ''}</p>`;
-
-            // Load chart data for visualization
+            tradeLog.innerHTML += `
+                <tr>
+                    <td class="p-2">${new Date(result.timestamp).toLocaleString()}</td>
+                    <td class="p-2">${result.signal || 'N/A'}</td>
+                    <td class="p-2">${result.entryPrice ? result.entryPrice.toFixed(2) : 'N/A'}</td>
+                    <td class="p-2">${result.units || 'N/A'}</td>
+                    <td class="p-2">${result.stopLoss ? result.stopLoss.toFixed(2) : 'N/A'}</td>
+                    <td class="p-2">${result.takeProfit ? result.takeProfit.toFixed(2) : 'N/A'}</td>
+                </tr>
+            `;
             loadChartData(startDate);
         } catch (error) {
             console.error('Error fetching trade signals:', error);
@@ -157,7 +164,12 @@ if (document.getElementById('start-trading')) {
 
         isTrading = true;
         const tradeLog = document.getElementById('trade-log');
-        tradeLog.innerHTML += `<p>${new Date().toLocaleString()}: Trading started.</p>`;
+        tradeLog.innerHTML += `
+            <tr>
+                <td class="p-2">${new Date().toLocaleString()}</td>
+                <td class="p-2" colspan="5">Trading started.</td>
+            </tr>
+        `;
 
         tradingInterval = setInterval(async () => {
             try {
@@ -166,10 +178,24 @@ if (document.getElementById('start-trading')) {
                     headers: { 'Content-Type': 'application/json' }
                 });
                 const result = await response.json();
-                tradeLog.innerHTML += `<p>${new Date(result.timestamp).toLocaleString()}: ${result.message}${result.signal ? ' - Signal: ' + result.signal : ''}${result.units ? ' - Units: ' + result.units : ''}${result.stopLoss ? ' - Stop Loss: ' + result.stopLoss : ''}${result.takeProfit ? ' - Take Profit: ' + result.takeProfit : ''}</p>`;
+                tradeLog.innerHTML += `
+                    <tr>
+                        <td class="p-2">${new Date(result.timestamp).toLocaleString()}</td>
+                        <td class="p-2">${result.signal || 'N/A'}</td>
+                        <td class="p-2">${result.entryPrice ? result.entryPrice.toFixed(2) : 'N/A'}</td>
+                        <td class="p-2">${result.units || 'N/A'}</td>
+                        <td class="p-2">${result.stopLoss ? result.stopLoss.toFixed(2) : 'N/A'}</td>
+                        <td class="p-2">${result.takeProfit ? result.takeProfit.toFixed(2) : 'N/A'}</td>
+                    </tr>
+                `;
             } catch (error) {
                 console.error('Error during auto-trading:', error);
-                tradeLog.innerHTML += `<p>${new Date().toLocaleString()}: Error during trading: ${error.message}</p>`;
+                tradeLog.innerHTML += `
+                    <tr>
+                        <td class="p-2">${new Date().toLocaleString()}</td>
+                        <td class="p-2" colspan="5">Error during trading: ${error.message}</td>
+                    </tr>
+                `;
             }
         }, 5 * 60 * 1000); // Fetch every 5 minutes
     });
@@ -186,7 +212,12 @@ if (document.getElementById('stop-trading')) {
         isTrading = false;
         clearInterval(tradingInterval);
         const tradeLog = document.getElementById('trade-log');
-        tradeLog.innerHTML += `<p>${new Date().toLocaleString()}: Trading stopped.</p>`;
+        tradeLog.innerHTML += `
+            <tr>
+                <td class="p-2">${new Date().toLocaleString()}</td>
+                <td class="p-2" colspan="5">Trading stopped.</td>
+            </tr>
+        `;
     });
 }
 
@@ -214,15 +245,25 @@ if (document.getElementById('backtest-form')) {
             document.getElementById('trades-executed').textContent = result.totalTrades || 0;
             document.getElementById('profit-loss').textContent = `$${result.netProfit || 0}`;
 
-            // Display trade indicators
+            // Display trade indicators in table format
             const tradeIndicators = document.getElementById('trade-indicators');
             tradeIndicators.innerHTML = '';
             if (result.trades && result.trades.length > 0) {
                 result.trades.forEach(trade => {
-                    tradeIndicators.innerHTML += `<p>${new Date(trade.timestamp).toLocaleString()}: Signal: ${trade.signal} - Units: ${trade.units} - Stop Loss: ${trade.stopLoss} - Take Profit: ${trade.takeProfit} - Profit/Loss: $${trade.profitLoss}</p>`;
+                    tradeIndicators.innerHTML += `
+                        <tr>
+                            <td class="p-2">${new Date(trade.timestamp).toLocaleString()}</td>
+                            <td class="p-2">${trade.signal}</td>
+                            <td class="p-2">${trade.entryPrice.toFixed(2)}</td>
+                            <td class="p-2">${trade.units}</td>
+                            <td class="p-2">${trade.stopLoss.toFixed(2)}</td>
+                            <td class="p-2">${trade.takeProfit.toFixed(2)}</td>
+                            <td class="p-2">$${trade.profitLoss.toFixed(2)}</td>
+                        </tr>
+                    `;
                 });
             } else {
-                tradeIndicators.innerHTML = '<p>No trades executed during this period.</p>';
+                tradeIndicators.innerHTML = '<tr><td colspan="7" class="p-2">No trades executed during this period.</td></tr>';
             }
         } catch (error) {
             console.error('Error running backtest:', error);
