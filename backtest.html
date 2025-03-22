@@ -38,10 +38,27 @@
                     <p><strong>Trades Executed:</strong> <span id="trades-executed">0</span></p>
                     <p><strong>Profit/Loss:</strong> <span id="profit-loss">$0</span></p>
                 </div>
-                <h2 class="text-xl mt-6 mb-4 text-[#A3BFFA]">Trade Indicators</h2>
-                <div id="trade-indicators" class="h-64 overflow-y-auto">
-                    <!-- Trade signals will be displayed here -->
-                </div>
+            </div>
+        </div>
+        <div class="bg-[#2E3A3B] p-6 rounded-lg shadow-lg mt-6 border border-[#00C4B4] border-opacity-20">
+            <h2 class="text-xl mb-4 text-[#A3BFFA]">Trade Indicators</h2>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left">
+                    <thead>
+                        <tr class="text-[#A3BFFA]">
+                            <th class="p-2">Timestamp</th>
+                            <th class="p-2">Signal</th>
+                            <th class="p-2">Entry Price</th>
+                            <th class="p-2">Units</th>
+                            <th class="p-2">Stop Loss</th>
+                            <th class="p-2">Take Profit</th>
+                            <th class="p-2">Profit/Loss</th>
+                        </tr>
+                    </thead>
+                    <tbody id="trade-indicators">
+                        <!-- Trade signals will be displayed here -->
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
