@@ -1,33 +1,64 @@
+<!-- frontend/public/backtest.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Backtest</title>
     <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        #chart-container {
+            width: 100%;
+            height: 400px;
+            margin-top: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
 </head>
 <body>
+    <h1>Run a Backtest</h1>
     <form id="backtest-form">
+        <label for="instrument">Instrument:</label>
         <select id="instrument">
             <option value="MNQ">MNQ</option>
             <option value="MES">MES</option>
         </select>
+        <label for="strategy">Strategy:</label>
         <select id="strategy">
             <option value="simple">Simple Strategy</option>
         </select>
-        <input type="date" id="start-date">
+        <label for="start-date">Start Date:</label>
+        <input type="date" id="start-date" required>
         <button type="submit">Run Backtest</button>
     </form>
     <div id="status"></div>
     <div id="trades-executed"></div>
     <div id="profit-loss"></div>
-    <div id="chart-container" style="width: 100%; height: 400px;"></div>
+    <div id="chart-container"></div>
+    <h2>Trade Indicators</h2>
     <table>
         <thead>
             <tr>
-                <th>Time</th>
+                <th>Timestamp</th>
                 <th>Signal</th>
-                <th>Price</th>
-                <th>P/L</th>
+                <th>Entry Price</th>
+                <th>Profit/Loss</th>
             </tr>
         </thead>
         <tbody id="trade-indicators-body"></tbody>
