@@ -1,3 +1,4 @@
+// frontend/src/scripts/backtest.js
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('backtest-form');
     const chartContainer = document.getElementById('chart-container');
