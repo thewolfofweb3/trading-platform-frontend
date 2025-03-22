@@ -6,39 +6,39 @@
     <title>Settings</title>
     <link rel="stylesheet" href="styles.css">
 </head>
-<body class="bg-[#0A0A0B] text-gray-100">
-    <nav class="bg-[#1A1A2E] p-4">
+<body class="bg-[#1C2526] text-[#E0E7E9]">
+    <nav class="bg-[#2E3A3B] p-4">
         <ul class="flex space-x-4">
-            <li><a href="index.html" class="text-[#39FF14] hover:text-green-400 transition-all duration-300">Dashboard</a></li>
-            <li><a href="backtest.html" class="text-[#39FF14] hover:text-green-400 transition-all duration-300">Backtest</a></li>
-            <li><a href="settings.html" class="text-[#39FF14] hover:text-green-400 transition-all duration-300">Settings</a></li>
+            <li><a href="index.html" class="text-[#42A5F5] hover:text-blue-400 transition-all duration-300">Dashboard</a></li>
+            <li><a href="backtest.html" class="text-[#42A5F5] hover:text-blue-400 transition-all duration-300">Backtest</a></li>
+            <li><a href="settings.html" class="text-[#42A5F5] hover:text-blue-400 transition-all duration-300">Settings</a></li>
         </ul>
     </nav>
     <div class="container mx-auto p-6">
         <h1 class="text-3xl mb-6">Settings</h1>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="bg-[#1A1A2E] p-6 rounded-lg shadow-lg border border-[#00D4FF] border-opacity-20">
-                <h2 class="text-xl mb-4 text-gray-400">Oanda Credentials</h2>
+            <div class="bg-[#2E3A3B] p-6 rounded-lg shadow-lg border border-[#00C4B4] border-opacity-20">
+                <h2 class="text-xl mb-4 text-[#A3BFFA]">Oanda Credentials</h2>
                 <form>
-                    <label class="block mb-2 text-gray-400">Oanda API Key:</label>
-                    <input type="text" class="bg-[#0A0A0B] p-2 rounded w-full text-gray-100 border border-[#00D4FF] border-opacity-20" placeholder="Enter API Key" />
-                    <label class="block mb-2 mt-4 text-gray-400">Oanda Account ID:</label>
-                    <input type="text" class="bg-[#0A0A0B] p-2 rounded w-full text-gray-100 border border-[#00D4FF] border-opacity-20" placeholder="Enter Account ID" />
-                    <button type="submit" class="bg-[#00D4FF] hover:shadow-[0_0_15px_#00D4FF] p-2 rounded mt-4 w-full text-[#0A0A0B] transition-all duration-300">Save Credentials</button>
+                    <label class="block mb-2 text-[#A3BFFA]">Oanda API Key:</label>
+                    <input type="text" class="bg-[#1C2526] p-2 rounded w-full text-[#E0E7E9] border border-[#00C4B4] border-opacity-20" placeholder="Enter API Key" />
+                    <label class="block mb-2 mt-4 text-[#A3BFFA]">Oanda Account ID:</label>
+                    <input type="text" class="bg-[#1C2526] p-2 rounded w-full text-[#E0E7E9] border border-[#00C4B4] border-opacity-20" placeholder="Enter Account ID" />
+                    <button type="submit" class="bg-[#00C4B4] hover:shadow-[0_0_15px_#26D0CE] p-2 rounded mt-4 w-full text-[#1C2526] transition-all duration-300">Save Credentials</button>
                 </form>
             </div>
-            <div class="bg-[#1A1A2E] p-6 rounded-lg shadow-lg border border-[#00D4FF] border-opacity-20">
-                <h2 class="text-xl mb-4 text-gray-400">Trading Parameters</h2>
+            <div class="bg-[#2E3A3B] p-6 rounded-lg shadow-lg border border-[#00C4B4] border-opacity-20">
+                <h2 class="text-xl mb-4 text-[#A3BFFA]">Trading Parameters</h2>
                 <form>
-                    <label class="block mb-2 text-gray-400">Daily Loss Cap (%):</label>
-                    <input type="number" class="bg-[#0A0A0B] p-2 rounded w-full text-gray-100 border border-[#00D4FF] border-opacity-20" value="3" />
-                    <label class="block mb-2 mt-4 text-gray-400">Risk Per Trade (%):</label>
-                    <input type="number" class="bg-[#0A0A0B] p-2 rounded w-full text-gray-100 border border-[#00D4FF] border-opacity-20" value="0.6" />
-                    <label class="block mb-2 mt-4 text-gray-400">Trading Start Time (ET):</label>
-                    <input type="time" class="bg-[#0A0A0B] p-2 rounded w-full text-gray-100 border border-[#00D4FF] border-opacity-20" value="09:45" />
-                    <label class="block mb-2 mt-4 text-gray-400">Trading End Time (ET):</label>
-                    <input type="time" class="bg-[#0A0A0B] p-2 rounded w-full text-gray-100 border border-[#00D4FF] border-opacity-20" value="15:30" />
-                    <button type="submit" class="bg-[#00D4FF] hover:shadow-[0_0_15px_#00D4FF] p-2 rounded mt-4 w-full text-[#0A0A0B] transition-all duration-300">Save Parameters</button>
+                    <label class="block mb-2 text-[#A3BFFA]">Daily Loss Cap (%):</label>
+                    <input type="number" class="bg-[#1C2526] p-2 rounded w-full text-[#E0E7E9] border border-[#00C4B4] border-opacity-20" value="3" />
+                    <label class="block mb-2 mt-4 text-[#A3BFFA]">Risk Per Trade (%):</label>
+                    <input type="number" class="bg-[#1C2526] p-2 rounded w-full text-[#E0E7E9] border border-[#00C4B4] border-opacity-20" value="0.6" />
+                    <label class="block mb-2 mt-4 text-[#A3BFFA]">Trading Start Time (ET):</label>
+                    <input type="time" class="bg-[#1C2526] p-2 rounded w-full text-[#E0E7E9] border border-[#00C4B4] border-opacity-20" value="09:45" />
+                    <label class="block mb-2 mt-4 text-[#A3BFFA]">Trading End Time (ET):</label>
+                    <input type="time" class="bg-[#1C2526] p-2 rounded w-full text-[#E0E7E9] border border-[#00C4B4] border-opacity-20" value="15:30" />
+                    <button type="submit" class="bg-[#00C4B4] hover:shadow-[0_0_15px_#26D0CE] p-2 rounded mt-4 w-full text-[#1C2526] transition-all duration-300">Save Parameters</button>
                 </form>
             </div>
         </div>
