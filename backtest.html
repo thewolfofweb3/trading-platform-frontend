@@ -20,9 +20,10 @@
             <div class="bg-[#374151] p-6 rounded-lg shadow-lg border border-[#00C4B4] border-opacity-20">
                 <h2 class="text-xl mb-4 text-[#D1D5DB]">Run a Backtest</h2>
                 <form id="backtest-form" class="mb-4">
-                    <label class="block mb-2 text-[#D1D5DB]">Instrument (MNQ):</label>
+                    <label class="block mb-2 text-[#D1D5DB]">Instrument (MNQ/MES):</label>
                     <select id="instrument" class="bg-[#1F2937] p-2 rounded w-full text-[#FFFFFF] border border-[#00C4B4] border-opacity-20">
-                        <option>I:MNQH25</option>
+                        <option value="MNQ">MNQ (Micro E-mini Nasdaq-100)</option>
+                        <option value="MES">MES (Micro E-mini S&P 500)</option>
                     </select>
                     <label class="block mb-2 mt-4 text-[#D1D5DB]">Start Date:</label>
                     <input type="date" id="start-date" class="bg-[#1F2937] p-2 rounded w-full text-[#FFFFFF] border border-[#00C4B4] border-opacity-20" />
