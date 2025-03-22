@@ -1,46 +1,89 @@
-/* Load a pre-built Tailwind CSS file */
-@import url('https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css');
-
-/* Custom Modern Font */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap');
 
-/* Custom Styles */
 body {
     font-family: 'Montserrat', sans-serif;
-    background: linear-gradient(135deg, #1F2937, #374151); /* Cooler, darker gray gradient */
+    background: linear-gradient(135deg, #0B1A2F, #1F2937);
+    color: #E0E7E9;
 }
 
-#trade-log, #trade-indicators {
-    max-height: 300px;
-    overflow-y: auto;
-    scrollbar-color: #00C4B4 #374151; /* Custom scrollbar */
-    scrollbar-width: thin;
+nav {
+    background: #1F2937;
+    padding: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-#trade-log::-webkit-scrollbar, #trade-indicators::-webkit-scrollbar {
-    width: 8px;
+nav ul {
+    display: flex;
+    gap: 1.5rem;
 }
 
-#trade-log::-webkit-scrollbar-track, #trade-indicators::-webkit-scrollbar-track {
-    background: #374151;
+nav a {
+    color: #42A5F5;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s;
 }
 
-#trade-log::-webkit-scrollbar-thumb, #trade-indicators::-webkit-scrollbar-thumb {
+nav a:hover {
+    color: #00C4B4;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+h1, h2 {
+    color: #00C4B4;
+    text-shadow: 0 0 10px #00C4B4;
+}
+
+select, input[type="date"] {
+    background: #1F2937;
+    color: #E0E7E9;
+    border: 1px solid #00C4B4;
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    margin-bottom: 1rem;
+}
+
+button {
     background: #00C4B4;
-    border-radius: 4px;
+    color: #0B1A2F;
+    border: 1px solid #26D0CE;
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    transition: box-shadow 0.3s;
+}
+
+button:hover {
+    box-shadow: 0 0 15px #26D0CE;
 }
 
 table {
-    border-collapse: collapse;
     width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
 }
 
 th, td {
     border: 1px solid #00C4B4;
-    padding: 8px;
+    padding: 0.5rem;
     text-align: left;
 }
 
 th {
-    background-color: #1F2937;
+    background: #1F2937;
+    color: #D1D5DB;
+}
+
+td {
+    background: #0B1A2F;
+}
+
+#chart {
+    border: 1px solid #00C4B4;
+    box-shadow: 0 0 10px #00C4B4;
 }
