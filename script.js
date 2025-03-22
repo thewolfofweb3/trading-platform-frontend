@@ -24,12 +24,12 @@ if (chartContainer) {
     });
 
     candleSeries = chart.addCandlestickSeries({
-        upColor: '#10B981', // Green for bullish
-        downColor: '#EF4444', // Red for bearish
-        borderUpColor: '#10B981',
-        borderDownColor: '#EF4444',
-        wickUpColor: '#10B981',
-        wickDownColor: '#EF4444',
+        upColor: '#39FF14', // Neon green for bullish
+        downColor: '#FF073A', // Neon red for bearish
+        borderUpColor: '#39FF14',
+        borderDownColor: '#FF073A',
+        wickUpColor: '#39FF14',
+        wickDownColor: '#FF073A',
     });
 
     // Initialize the heatmap
@@ -55,13 +55,13 @@ async function loadChartData(startDate) {
 
         // Add session high and low lines
         if (sessionHigh) {
-            chart.addLineSeries({ color: '#F87171', lineWidth: 1 }).setData([
+            chart.addLineSeries({ color: '#FF073A', lineWidth: 1 }).setData([
                 { time: chartData[0].time, value: sessionHigh },
                 { time: chartData[chartData.length - 1].time, value: sessionHigh },
             ]);
         }
         if (sessionLow) {
-            chart.addLineSeries({ color: '#34D399', lineWidth: 1 }).setData([
+            chart.addLineSeries({ color: '#39FF14', lineWidth: 1 }).setData([
                 { time: chartData[0].time, value: sessionLow },
                 { time: chartData[chartData.length - 1].time, value: sessionLow },
             ]);
@@ -70,12 +70,12 @@ async function loadChartData(startDate) {
         // Add Fibonacci levels
         if (fibLevels) {
             const fibSeries = [
-                { level: fibLevels.fib_0, color: '#A855F7' }, // Purple
-                { level: fibLevels.fib_236, color: '#3B82F6' }, // Blue
-                { level: fibLevels.fib_382, color: '#22D3EE' }, // Cyan
-                { level: fibLevels.fib_500, color: '#FBBF24' }, // Yellow
-                { level: fibLevels.fib_618, color: '#F97316' }, // Orange
-                { level: fibLevels.fib_100, color: '#A855F7' }, // Purple
+                { level: fibLevels.fib_0, color: '#FF00FF' }, // Neon magenta
+                { level: fibLevels.fib_236, color: '#00D4FF' }, // Neon blue
+                { level: fibLevels.fib_382, color: '#39FF14' }, // Neon green
+                { level: fibLevels.fib_500, color: '#FFFF00' }, // Neon yellow
+                { level: fibLevels.fib_618, color: '#FF073A' }, // Neon red
+                { level: fibLevels.fib_100, color: '#FF00FF' }, // Neon magenta
             ];
             fibSeries.forEach(fib => {
                 chart.addLineSeries({ color: fib.color, lineWidth: 1 }).setData([
@@ -92,7 +92,7 @@ async function loadChartData(startDate) {
             return {
                 price: parseFloat(candle.close),
                 volume: volume,
-                color: isBullish ? 'rgba(0, 255, 0, 0.7)' : 'rgba(255, 0, 0, 0.7)', // Green for buying, red for selling
+                color: isBullish ? 'rgba(57, 255, 20, 0.7)' : 'rgba(255, 7, 58, 0.7)', // Neon green for buying, neon red for selling
             };
         });
 
@@ -131,7 +131,7 @@ if (document.getElementById('fetch-signals')) {
             });
             const result = await response.json();
             const tradeLog = document.getElementById('trade-log');
-            tradeLog.innerHTML += `<p>${new Date(result.timestamp).toLocaleTimeString()}: ${result.message}${result.signal ? ' - Signal: ' + result.signal : ''}${result.units ? ' - Units: ' + result.units : ''}${result.stopLoss ? ' - Stop Loss: ' + result.stopLoss : ''}${result.takeProfit ? ' - Take Profit: ' + result.takeProfit : ''}</p>`;
+            tradeLog.innerHTML += `<p>${new Date(result.timestamp).toLocaleString()}: ${result.message}${result.signal ? ' - Signal: ' + result.signal : ''}${result.units ? ' - Units: ' + result.units : ''}${result.stopLoss ? ' - Stop Loss: ' + result.stopLoss : ''}${result.takeProfit ? ' - Take Profit: ' + result.takeProfit : ''}</p>`;
 
             // Load chart data for visualization
             loadChartData(startDate);
@@ -151,7 +151,7 @@ if (document.getElementById('start-trading')) {
             });
             const result = await response.json();
             const tradeLog = document.getElementById('trade-log');
-            tradeLog.innerHTML += `<p>${new Date(result.timestamp).toLocaleTimeString()}: ${result.message}${result.signal ? ' - Signal: ' + result.signal : ''}${result.units ? ' - Units: ' + result.units : ''}${result.stopLoss ? ' - Stop Loss: ' + result.stopLoss : ''}${result.takeProfit ? ' - Take Profit: ' + result.takeProfit : ''}</p>`;
+            tradeLog.innerHTML += `<p>${new Date(result.timestamp).toLocaleString()}: ${result.message}${result.signal ? ' - Signal: ' + result.signal : ''}${result.units ? ' - Units: ' + result.units : ''}${result.stopLoss ? ' - Stop Loss: ' + result.stopLoss : ''}${result.takeProfit ? ' - Take Profit: ' + result.takeProfit : ''}</p>`;
         } catch (error) {
             console.error('Error starting trading:', error);
         }
