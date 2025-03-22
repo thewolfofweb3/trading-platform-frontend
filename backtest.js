@@ -20,36 +20,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Connect to WebSocket for real-time data
-    const ws = new WebSocket('ws://localhost:8080');
-    ws.onopen = () => {
-        console.log('Connected to backend WebSocket');
-        const instrument = document.getElementById('instrument').value;
-        ws.send(JSON.stringify({ instrument }));
-    };
-    ws.onmessage = (event) => {
-        const trade = JSON.parse(event.data);
-        console.log('Received real-time trade:', trade);
-        const tableBody = document.getElementById('trade-indicators-body');
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${trade.timestamp}</td>
-            <td>Trade</td>
-            <td>${trade.price}</td>
-            <td>${trade.size}</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-        `;
-        tableBody.prepend(row);
-    };
-    ws.onerror = (error) => {
-        console.error('WebSocket error:', error);
-    };
-    ws.onclose = () => {
-        console.log('Disconnected from backend WebSocket');
-    };
-
     form.addEventListener('submit', async (event) => {
         event.preventDefault();
         const instrument = document.getElementById('instrument').value;
@@ -113,6 +83,9 @@ document.addEventListener('DOMContentLoaded', () => {
             // Update chart
             if (candleSeries && result.chartData) {
                 candleSeries.setData(result.chartData);
+                console.log('Chart updated with', result.chartData.length, 'candles');
+            } else {
+                console.error('Chart not updated: candleSeries or chartData missing');
             }
         } catch (error) {
             document.getElementById('status').textContent = `Error: ${error.message}`;
