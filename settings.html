@@ -1,48 +1,42 @@
+<!-- frontend/public/settings.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Settings</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="/styles.css">
 </head>
-<body class="bg-[#1F2937] text-[#FFFFFF]">
-    <nav class="bg-[#374151] p-4">
-        <ul class="flex space-x-4">
-            <li><a href="index.html" class="text-[#42A5F5] hover:text-blue-400 transition-all duration-300">Dashboard</a></li>
-            <li><a href="backtest.html" class="text-[#42A5F5] hover:text-blue-400 transition-all duration-300">Backtest</a></li>
-            <li><a href="settings.html" class="text-[#42A5F5] hover:text-blue-400 transition-all duration-300">Settings</a></li>
-        </ul>
-    </nav>
-    <div class="container mx-auto p-6">
-        <h1 class="text-3xl mb-6">Settings</h1>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="bg-[#374151] p-6 rounded-lg shadow-lg border border-[#00C4B4] border-opacity-20">
-                <h2 class="text-xl mb-4 text-[#D1D5DB]">Oanda Credentials</h2>
-                <form>
-                    <label class="block mb-2 text-[#D1D5DB]">Oanda API Key:</label>
-                    <input type="text" class="bg-[#1F2937] p-2 rounded w-full text-[#FFFFFF] border border-[#00C4B4] border-opacity-20" placeholder="Enter API Key" />
-                    <label class="block mb-2 mt-4 text-[#D1D5DB]">Oanda Account ID:</label>
-                    <input type="text" class="bg-[#1F2937] p-2 rounded w-full text-[#FFFFFF] border border-[#00C4B4] border-opacity-20" placeholder="Enter Account ID" />
-                    <button type="submit" class="bg-[#00C4B4] hover:shadow-[0_0_15px_#26D0CE] p-2 rounded mt-4 w-full text-[#1F2937] transition-all duration-300 border border-[#26D0CE]">Save Credentials</button>
-                </form>
-            </div>
-            <div class="bg-[#374151] p-6 rounded-lg shadow-lg border border-[#00C4B4] border-opacity-20">
-                <h2 class="text-xl mb-4 text-[#D1D5DB]">Trading Parameters</h2>
-                <form>
-                    <label class="block mb-2 text-[#D1D5DB]">Daily Loss Cap (%):</label>
-                    <input type="number" class="bg-[#1F2937] p-2 rounded w-full text-[#FFFFFF] border border-[#00C4B4] border-opacity-20" value="3" />
-                    <label class="block mb-2 mt-4 text-[#D1D5DB]">Risk Per Trade (%):</label>
-                    <input type="number" class="bg-[#1F2937] p-2 rounded w-full text-[#FFFFFF] border border-[#00C4B4] border-opacity-20" value="0.6" />
-                    <label class="block mb-2 mt-4 text-[#D1D5DB]">Trading Start Time (ET):</label>
-                    <input type="time" class="bg-[#1F2937] p-2 rounded w-full text-[#FFFFFF] border border-[#00C4B4] border-opacity-20" value="09:45" />
-                    <label class="block mb-2 mt-4 text-[#D1D5DB]">Trading End Time (ET):</label>
-                    <input type="time" class="bg-[#1F2937] p-2 rounded w-full text-[#FFFFFF] border border-[#00C4B4] border-opacity-20" value="15:30" />
-                    <button type="submit" class="bg-[#00C4B4] hover:shadow-[0_0_15px_#26D0CE] p-2 rounded mt-4 w-full text-[#1F2937] transition-all duration-300 border border-[#26D0CE]">Save Parameters</button>
-                </form>
-            </div>
-        </div>
-    </div>
-    <script src="script.js"></script>
+<body>
+    <header>
+        <nav>
+            <a href="/dashboard">Dashboard</a>
+            <a href="/backtest">Backtest</a>
+            <a href="/settings" class="active">Settings</a>
+        </nav>
+    </header>
+    <main>
+        <section class="settings-form">
+            <h1>Settings</h1>
+            <form id="settings-form">
+                <label for="api-key">OANDA API Key</label>
+                <input type="text" id="api-key" placeholder="Enter API Key">
+                <label for="account-id">OANDA Account ID</label>
+                <input type="text" id="account-id" placeholder="Enter Account ID">
+                <label for="daily-loss-cap">Daily Loss Cap (%)</label>
+                <input type="number" id="daily-loss-cap" value="3" step="0.1">
+                <label for="risk-per-trade">Risk Per Trade (%)</label>
+                <input type="number" id="risk-per-trade" value="0.6" step="0.1">
+                <label for="trading-start-time">Trading Start Time (ET)</label>
+                <input type="time" id="trading-start-time" value="09:45">
+                <label for="trading-end-time">Trading End Time (ET)</label>
+                <input type="time" id="trading-end-time" value="15:30">
+                <label for="email-notifications">Enable Email Notifications</label>
+                <input type="checkbox" id="email-notifications">
+                <button type="submit">Save Settings</button>
+            </form>
+        </section>
+    </main>
+    <script src="/scripts/settings.js"></script>
 </body>
 </html>
