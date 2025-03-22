@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const chartContainer = document.getElementById('chart-container');
     let chart, candleSeries;
 
-    // Initialize chart only if container exists
+    // Initialize chart
     if (chartContainer) {
         chart = LightweightCharts.createChart(chartContainer, {
             width: chartContainer.clientWidth,
@@ -19,6 +19,36 @@ document.addEventListener('DOMContentLoaded', () => {
             wickUpColor: '#00C4B4', wickDownColor: '#FF6F61',
         });
     }
+
+    // Connect to WebSocket for real-time data
+    const ws = new WebSocket('ws://localhost:8080');
+    ws.onopen = () => {
+        console.log('Connected to backend WebSocket');
+        const instrument = document.getElementById('instrument').value;
+        ws.send(JSON.stringify({ instrument }));
+    };
+    ws.onmessage = (event) => {
+        const trade = JSON.parse(event.data);
+        console.log('Received real-time trade:', trade);
+        const tableBody = document.getElementById('trade-indicators-body');
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${trade.timestamp}</td>
+            <td>Trade</td>
+            <td>${trade.price}</td>
+            <td>${trade.size}</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        `;
+        tableBody.prepend(row);
+    };
+    ws.onerror = (error) => {
+        console.error('WebSocket error:', error);
+    };
+    ws.onclose = () => {
+        console.log('Disconnected from backend WebSocket');
+    };
 
     form.addEventListener('submit', async (event) => {
         event.preventDefault();
