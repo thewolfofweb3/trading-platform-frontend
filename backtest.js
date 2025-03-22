@@ -1,7 +1,7 @@
-// frontend/src/scripts/backtest.js
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('backtest-form');
     const chartContainer = document.getElementById('chart-container');
+    const status = document.getElementById('status');
     let chart, candleSeries;
 
     // Initialize chart
@@ -9,15 +9,12 @@ document.addEventListener('DOMContentLoaded', () => {
         chart = LightweightCharts.createChart(chartContainer, {
             width: chartContainer.clientWidth,
             height: 400,
-            layout: { backgroundColor: '#0B1A2F', textColor: '#E0E7E9' },
-            grid: { vertLines: { color: '#2E3A3B' }, horzLines: { color: '#2E3A3B' } },
-            timeScale: { timeVisible: true, secondsVisible: false },
+            layout: { backgroundColor: '#ffffff', textColor: '#000000' },
+            timeScale: { timeVisible: true }
         });
-        candleSeries = chart.addCandlestickSeries({
-            upColor: '#00C4B4', downColor: '#FF6F61',
-            borderUpColor: '#00C4B4', borderDownColor: '#FF6F61',
-            wickUpColor: '#00C4B4', wickDownColor: '#FF6F61',
-        });
+        candleSeries = chart.addCandlestickSeries();
+    } else {
+        console.error('Chart container not found');
     }
 
     form.addEventListener('submit', async (event) => {
@@ -25,21 +22,18 @@ document.addEventListener('DOMContentLoaded', () => {
         const instrument = document.getElementById('instrument').value;
         const strategy = document.getElementById('strategy').value;
         const startDate = document.getElementById('start-date').value;
-        const today = new Date().toISOString().split('T')[0];
 
-        // Validate date
         if (!startDate) {
-            document.getElementById('status').textContent = 'Error: Please select a start date.';
+            status.textContent = 'Error: Please select a start date.';
             return;
         }
-        if (startDate >= today) {
-            document.getElementById('status').textContent = 'Error: Please select a past date.';
+        if (startDate >= new Date().toISOString().split('T')[0]) {
+            status.textContent = 'Error: Start date must be in the past.';
             return;
         }
 
-        document.getElementById('status').textContent = 'Running backtest...';
+        status.textContent = 'Running backtest...';
         try {
-            console.log('Sending backtest request:', { instrument, strategy, startDate });
             const response = await fetch('https://trading-platform-backend-vert.vercel.app/api/backtest', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -48,48 +42,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (!response.ok) {
                 const errorData = await response.json();
-                throw new Error(errorData.error || 'Backtest failed');
+                throw new Error(errorData.error || 'Failed to fetch data');
             }
 
-            const result = await response.json();
-            console.log('Backtest result:', result);
+            const { trades, netProfit, chartData } = await response.json();
 
-            // Update results
-            document.getElementById('status').textContent = 'Backtest completed.';
-            document.getElementById('trades-executed').textContent = `Trades Executed: ${result.trades.length}`;
-            document.getElementById('profit-loss').textContent = `Profit/Loss: $${result.netProfit.toFixed(2)}`;
+            // Update UI
+            status.textContent = 'Backtest completed!';
+            document.getElementById('trades-executed').textContent = `Trades: ${trades.length}`;
+            document.getElementById('profit-loss').textContent = `Profit: $${netProfit.toFixed(2)}`;
 
-            // Populate table
+            // Update table
             const tableBody = document.getElementById('trade-indicators-body');
-            tableBody.innerHTML = '';
-            if (result.trades.length === 0) {
-                tableBody.innerHTML = '<tr><td colspan="7">No trades executed.</td></tr>';
-            } else {
-                result.trades.forEach(trade => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${trade.timestamp}</td>
-                        <td>${trade.signal}</td>
-                        <td>${trade.entryPrice}</td>
-                        <td>${trade.units}</td>
-                        <td>${trade.stopLoss}</td>
-                        <td>${trade.takeProfit}</td>
-                        <td>${trade.profitLoss >= 0 ? '+' : ''}${trade.profitLoss.toFixed(2)}</td>
-                    `;
-                    tableBody.appendChild(row);
-                });
-            }
+            tableBody.innerHTML = trades.map(trade => `
+                <tr>
+                    <td>${trade.timestamp}</td>
+                    <td>${trade.signal}</td>
+                    <td>${trade.entryPrice}</td>
+                    <td>${trade.profitLoss.toFixed(2)}</td>
+                </tr>
+            `).join('');
 
             // Update chart
-            if (candleSeries && result.chartData) {
-                candleSeries.setData(result.chartData);
-                console.log('Chart updated with', result.chartData.length, 'candles');
-            } else {
-                console.error('Chart not updated: candleSeries or chartData missing');
+            if (candleSeries && chartData) {
+                candleSeries.setData(chartData);
+                chart.timeScale().fitContent();
             }
         } catch (error) {
-            document.getElementById('status').textContent = `Error: ${error.message}`;
-            console.error('Backtest error:', error);
+            status.textContent = `Error: ${error.message}`;
+            console.error('Fetch error:', error);
         }
     });
 });
