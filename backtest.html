@@ -1,66 +1,37 @@
-<!-- frontend/public/backtest.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Backtesting Dashboard</title>
-    <link rel="stylesheet" href="/styles.css">
+    <title>Backtest</title>
     <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
 </head>
 <body>
-    <header>
-        <nav>
-            <a href="/dashboard">Dashboard</a>
-            <a href="/backtest" class="active">Backtest</a>
-            <a href="/settings">Settings</a>
-        </nav>
-    </header>
-    <main>
-        <section class="backtest-form">
-            <h1>Run a Backtest</h1>
-            <form id="backtest-form">
-                <label for="instrument">Instrument</label>
-                <select id="instrument">
-                    <option value="MNQ">MNQ</option>
-                    <option value="MES">MES</option>
-                </select>
-                <label for="strategy">Strategy</label>
-                <select id="strategy">
-                    <option value="ictScalping">ICT Scalping</option>
-                    <option value="maCrossover">Moving Average Crossover</option>
-                    <option value="bollingerSqueeze">Bollinger Band Squeeze</option>
-                </select>
-                <label for="start-date">Start Date</label>
-                <input type="date" id="start-date" required>
-                <button type="submit">Run Backtest</button>
-            </form>
-        </section>
-        <section class="backtest-results">
-            <h1>Backtest Results</h1>
-            <p id="status">Not yet run</p>
-            <p id="trades-executed">Trades Executed: 0</p>
-            <p id="profit-loss">Profit/Loss: $0</p>
-            <div id="chart-container"></div>
-        </section>
-        <section class="trade-indicators">
-            <h1>Trade Indicators</h1>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Timestamp</th>
-                        <th>Signal</th>
-                        <th>Entry Price</th>
-                        <th>Units</th>
-                        <th>Stop Loss</th>
-                        <th>Take Profit</th>
-                        <th>Profit/Loss</th>
-                    </tr>
-                </thead>
-                <tbody id="trade-indicators-body"></tbody>
-            </table>
-        </section>
-    </main>
-    <script src="/scripts/backtest.js"></script>
+    <form id="backtest-form">
+        <select id="instrument">
+            <option value="MNQ">MNQ</option>
+            <option value="MES">MES</option>
+        </select>
+        <select id="strategy">
+            <option value="simple">Simple Strategy</option>
+        </select>
+        <input type="date" id="start-date">
+        <button type="submit">Run Backtest</button>
+    </form>
+    <div id="status"></div>
+    <div id="trades-executed"></div>
+    <div id="profit-loss"></div>
+    <div id="chart-container" style="width: 100%; height: 400px;"></div>
+    <table>
+        <thead>
+            <tr>
+                <th>Time</th>
+                <th>Signal</th>
+                <th>Price</th>
+                <th>P/L</th>
+            </tr>
+        </thead>
+        <tbody id="trade-indicators-body"></tbody>
+    </table>
+    <script src="/src/scripts/backtest.js"></script>
 </body>
 </html>
