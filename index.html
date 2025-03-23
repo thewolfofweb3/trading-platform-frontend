@@ -14,6 +14,7 @@
             <button class="tab active" onclick="openTab('dashboard')">Dashboard</button>
             <button class="tab" onclick="openTab('backtesting')">Backtesting</button>
             <button class="tab" onclick="openTab('paperTrading')">Paper Trading</button>
+            <button class="tab" onclick="openTab('pnl')">PnL</button>
             <button class="tab" onclick="openTab('settings')">Settings</button>
         </div>
 
@@ -23,12 +24,8 @@
             <h2>Market Overview</h2>
             <div class="market-overview">
                 <div>
-                    <p>Session High</p>
-                    <canvas id="sessionHighChart" width="200" height="100"></canvas>
-                </div>
-                <div>
-                    <p>Session Low</p>
-                    <canvas id="sessionLowChart" width="200" height="100"></canvas>
+                    <p>Candlestick Chart</p>
+                    <canvas id="candlestickChart" width="400" height="200"></canvas>
                 </div>
                 <div>
                     <p>Daily Change</p>
@@ -57,6 +54,7 @@
                         <th>ENTRY PRICE</th>
                         <th>EXIT PRICE</th>
                         <th>PROFIT/LOSS</th>
+                        <th>REASON</th>
                     </tr>
                 </thead>
                 <tbody id="tradeLogBody"></tbody>
@@ -103,6 +101,21 @@
                     <p id="profitFactor">0.00</p>
                 </div>
             </div>
+            <h2>Backtest Trade Log</h2>
+            <table id="backtestTradeLog">
+                <thead>
+                    <tr>
+                        <th>TIMESTAMP</th>
+                        <th>INSTRUMENT</th>
+                        <th>SIGNAL</th>
+                        <th>ENTRY PRICE</th>
+                        <th>EXIT PRICE</th>
+                        <th>PROFIT/LOSS</th>
+                        <th>REASON</th>
+                    </tr>
+                </thead>
+                <tbody id="backtestTradeLogBody"></tbody>
+            </table>
         </div>
 
         <!-- Paper Trading Tab -->
@@ -135,10 +148,26 @@
                         <th>ENTRY PRICE</th>
                         <th>EXIT PRICE</th>
                         <th>PROFIT/LOSS</th>
+                        <th>REASON</th>
                     </tr>
                 </thead>
                 <tbody id="paperTradeLogBody"></tbody>
             </table>
+        </div>
+
+        <!-- PnL Tab -->
+        <div id="pnl" class="tab-content">
+            <h2>Profit & Loss</h2>
+            <div class="results">
+                <div>
+                    <p>Dashboard Net Profit</p>
+                    <p id="dashboardPnL">$0</p>
+                </div>
+                <div>
+                    <p>Paper Trading Net Profit</p>
+                    <p id="paperTradingPnL">$0</p>
+                </div>
+            </div>
         </div>
 
         <!-- Settings Tab -->
