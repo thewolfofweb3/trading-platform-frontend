@@ -8,207 +8,137 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <div class="container">
-        <h1>FUTURES AI TRADING</h1>
-        <div class="tabs">
-            <button class="tab active" onclick="openTab('dashboard')">Dashboard</button>
-            <button class="tab" onclick="openTab('backtesting')">Backtesting</button>
-            <button class="tab" onclick="openTab('paperTrading')">Paper Trading</button>
-            <button class="tab" onclick="openTab('pnl')">PnL</button>
-            <button class="tab" onclick="openTab('settings')">Settings</button>
-        </div>
-
-        <!-- Dashboard Tab -->
-        <div id="dashboard" class="tab-content active">
-            <button class="action-btn" onclick="startAutoTrading()">START AUTO-TRADING</button>
-            <h2>Market Overview</h2>
-            <div class="market-overview">
-                <div>
-                    <p>Price Chart</p>
-                    <canvas id="priceChart" width="400" height="200"></canvas>
-                </div>
-                <div>
-                    <p>Daily Change</p>
-                    <p id="dailyChange">--.--%</p>
-                </div>
-                <div>
-                    <p>Volume</p>
-                    <p id="volume">-----</p>
-                </div>
-                <div>
-                    <p>Trading Status</p>
-                    <p id="tradingStatus">Trading Paused</p>
-                </div>
-                <div>
-                    <p>Today's Performance</p>
-                    <p id="todayPerformance">$0 (0 WINS, 0 LOSSES)</p>
-                </div>
-            </div>
-            <h2>Trade Log</h2>
-            <table id="tradeLog">
-                <thead>
-                    <tr>
-                        <th>TIMESTAMP</th>
-                        <th>INSTRUMENT</th>
-                        <th>SIGNAL</th>
-                        <th>ENTRY PRICE</th>
-                        <th>EXIT PRICE</th>
-                        <th>PROFIT/LOSS</th>
-                        <th>REASON</th>
-                    </tr>
-                </thead>
-                <tbody id="tradeLogBody"></tbody>
-            </table>
-        </div>
-
-        <!-- Backtesting Tab -->
-        <div id="backtesting" class="tab-content">
-            <h2>Backtest Configuration</h2>
-            <div class="form-group">
-                <label>Instrument</label>
-                <select id="instrument">
-                    <option>MES1 (Micro E-mini S&P 500)</option>
-                    <option>MNQ1 (Micro E-mini Nasdaq-100)</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Strategy</label>
-                <select id="strategy">
-                    <option>ICT Trading</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Date</label>
-                <input type="date" id="backtestDate" value="2024-10-01">
-            </div>
-            <button class="action-btn" onclick="runBacktest()">RUN BACKTEST</button>
-            <h2>Backtest Results</h2>
-            <div class="results">
-                <div>
-                    <p>TOTAL TRADES</p>
-                    <p id="totalTrades">0</p>
-                </div>
-                <div>
-                    <p>WIN RATE</p>
-                    <p id="winRate">0.00%</p>
-                </div>
-                <div>
-                    <p>NET PROFIT</p>
-                    <p id="netProfit">$0</p>
-                </div>
-                <div>
-                    <p>PROFIT FACTOR</p>
-                    <p id="profitFactor">0.00</p>
-                </div>
-            </div>
-            <h2>Backtest Trade Log</h2>
-            <table id="backtestTradeLog">
-                <thead>
-                    <tr>
-                        <th>TIMESTAMP</th>
-                        <th>INSTRUMENT</th>
-                        <th>SIGNAL</th>
-                        <th>ENTRY PRICE</th>
-                        <th>EXIT PRICE</th>
-                        <th>PROFIT/LOSS</th>
-                        <th>REASON</th>
-                    </tr>
-                </thead>
-                <tbody id="backtestTradeLogBody"></tbody>
-            </table>
-        </div>
-
-        <!-- Paper Trading Tab -->
-        <div id="paperTrading" class="tab-content">
-            <h2>Paper Trading Configuration</h2>
-            <div class="form-group">
-                <label>Broker</label>
-                <select id="paperBroker">
-                    <option>Tradovate</option>
-                    <option>WealthCharts</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>API Key</label>
-                <input type="text" id="paperApiKey" placeholder="Enter your API Key">
-            </div>
-            <div class="form-group">
-                <label>Account ID</label>
-                <input type="text" id="paperAccountId" placeholder="Enter your Account ID">
-            </div>
-            <button class="action-btn" onclick="startPaperTrading()">START PAPER TRADING</button>
-            <button class="action-btn" onclick="runPaperBacktest()">RUN PAPER BACKTEST</button>
-            <h2>Paper Trading Log</h2>
-            <table id="paperTradeLog">
-                <thead>
-                    <tr>
-                        <th>TIMESTAMP</th>
-                        <th>INSTRUMENT</th>
-                        <th>SIGNAL</th>
-                        <th>ENTRY PRICE</th>
-                        <th>EXIT PRICE</th>
-                        <th>PROFIT/LOSS</th>
-                        <th>REASON</th>
-                    </tr>
-                </thead>
-                <tbody id="paperTradeLogBody"></tbody>
-            </table>
-        </div>
-
-        <!-- PnL Tab -->
-        <div id="pnl" class="tab-content">
-            <h2>Profit & Loss</h2>
-            <div class="results">
-                <div>
-                    <p>Dashboard Net Profit</p>
-                    <p id="dashboardPnL">$0</p>
-                </div>
-                <div>
-                    <p>Paper Trading Net Profit</p>
-                    <p id="paperTradingPnL">$0</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Settings Tab -->
-        <div id="settings" class="tab-content">
-            <h2>API Configuration</h2>
-            <div class="form-group">
-                <label>Broker</label>
-                <select id="broker">
-                    <option>Tradovate</option>
-                    <option>WealthCharts</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>API Key</label>
-                <input type="text" id="apiKey" placeholder="Enter your API Key">
-            </div>
-            <div class="form-group">
-                <label>Account ID</label>
-                <input type="text" id="accountId" placeholder="Enter your Account ID">
-            </div>
-            <h2>Risk Management</h2>
-            <div class="form-group">
-                <label>Daily Loss Cap ($)</label>
-                <input type="number" id="dailyLossCap" value="5000">
-            </div>
-            <div class="form-group">
-                <label>Daily Win Cap ($)</label>
-                <input type="number" id="dailyWinCap" value="9000">
-            </div>
-            <div class="form-group">
-                <label>Max Trades Per Day</label>
-                <input type="number" id="maxTradesPerDay" value="3">
-            </div>
-            <div class="form-group">
-                <label>Default Strategy</label>
-                <select id="defaultStrategy">
-                    <option>ICT Trading</option>
-                </select>
-            </div>
-        </div>
+    <h1>FUTURES AI TRADING</h1>
+    <div class="tabs">
+        <button class="tab active" onclick="openTab('dashboard')">Dashboard</button>
+        <button class="tab" onclick="openTab('backtesting')">Backtesting</button>
+        <button class="tab" onclick="openTab('paperTrading')">Paper Trading</button>
+        <button class="tab" onclick="openTab('pnl')">PnL</button>
+        <button class="tab" onclick="openTab('settings')">Settings</button>
     </div>
+
+    <!-- Dashboard Tab -->
+    <div id="dashboard" class="tab-content active">
+        <h2>Market Overview</h2>
+        <canvas id="priceChart"></canvas>
+        <p>Daily Change: <span id="dailyChange">0.00%</span></p>
+        <p>Volume: <span id="volume">0</span></p>
+        <h2>Trading Status</h2>
+        <p>Status: <span id="tradingStatus">Inactive</span></p>
+        <p>Today's Performance: <span id="todayPerformance">$0 (0 WINS, 0 LOSSES)</span></p>
+        <p>PnL: <span id="dashboardPnL">$0</span></p>
+        <button onclick="startAutoTrading()">Start Auto-Trading</button>
+        <h2>Trade Log</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Timestamp</th>
+                    <th>Instrument</th>
+                    <th>Signal</th>
+                    <th>Entry Price</th>
+                    <th>Exit Price</th>
+                    <th>Profit/Loss</th>
+                    <th>Reason</th>
+                </tr>
+            </thead>
+            <tbody id="tradeLogBody"></tbody>
+        </table>
+    </div>
+
+    <!-- Backtesting Tab -->
+    <div id="backtesting" class="tab-content">
+        <h2>Backtest Configuration</h2>
+        <label for="instrument">Instrument:</label>
+        <select id="instrument">
+            <option value="MES1">Micro E-mini S&P 500</option>
+        </select><br>
+        <label for="strategy">Strategy:</label>
+        <select id="strategy">
+            <option value="ICT Trading">ICT Trading</option>
+        </select><br>
+        <label for="backtestDate">Date:</label>
+        <input type="date" id="backtestDate" value="2024-10-01"><br>
+        <button onclick="runBacktest()">Run Backtest</button>
+        <h2>Backtest Results</h2>
+        <div class="results">
+            <div class="result-box">
+                <h3>Total Trades</h3>
+                <p id="totalTrades">0</p>
+            </div>
+            <div class="result-box">
+                <h3>Win Rate</h3>
+                <p id="winRate">0.00%</p>
+            </div>
+            <div class="result-box">
+                <h3>Net Profit</h3>
+                <p id="netProfit">$0</p>
+            </div>
+            <div class="result-box">
+                <h3>Profit Factor</h3>
+                <p id="profitFactor">0.00</p>
+            </div>
+        </div>
+        <h2>Backtest Trade Log</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Timestamp</th>
+                    <th>Instrument</th>
+                    <th>Signal</th>
+                    <th>Entry Price</th>
+                    <th>Exit Price</th>
+                    <th>Profit/Loss</th>
+                    <th>Reason</th>
+                </tr>
+            </thead>
+            <tbody id="backtestTradeLogBody"></tbody>
+        </table>
+    </div>
+
+    <!-- Paper Trading Tab -->
+    <div id="paperTrading" class="tab-content">
+        <h2>Paper Trading Configuration</h2>
+        <label for="paperBroker">Broker:</label>
+        <input type="text" id="paperBroker" placeholder="e.g., Tradovate"><br>
+        <label for="paperApiKey">API Key:</label>
+        <input type="text" id="paperApiKey" placeholder="Your API Key"><br>
+        <label for="paperAccountId">Account ID:</label>
+        <input type="text" id="paperAccountId" placeholder="Your Account ID"><br>
+        <button onclick="startPaperTrading()">Start Paper Trading</button>
+        <button onclick="runPaperBacktest()">Run Paper Backtest</button>
+        <h2>Paper Trading Results</h2>
+        <p>PnL: <span id="paperTradingPnL">$0</span></p>
+        <h2>Paper Trade Log</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Timestamp</th>
+                    <th>Instrument</th>
+                    <th>Signal</th>
+                    <th>Entry Price</th>
+                    <th>Exit Price</th>
+                    <th>Profit/Loss</th>
+                    <th>Reason</th>
+                </tr>
+            </thead>
+            <tbody id="paperTradeLogBody"></tbody>
+        </table>
+    </div>
+
+    <!-- PnL Tab -->
+    <div id="pnl" class="tab-content">
+        <h2>Profit & Loss</h2>
+        <p>Total PnL: <span id="totalPnL">$0</span></p>
+    </div>
+
+    <!-- Settings Tab -->
+    <div id="settings" class="tab-content">
+        <h2>Settings</h2>
+        <label for="apiKey">Tradovate/WealthCharts API Key:</label>
+        <input type="text" id="apiKey" placeholder="Your API Key"><br>
+        <button onclick="saveSettings()">Save Settings</button>
+    </div>
+
     <script src="scripts.js"></script>
 </body>
 </html>
