@@ -36,7 +36,7 @@ const sessionLowChart = new Chart(document.getElementById('sessionLowChart'), {
 });
 
 async function fetchMarketData() {
-    const response = await fetch('');
+    const response = await fetch('https://trading-platform-backend-vert.vercel.app/');
     const data = await response.json();
     sessionHighChart.data.labels = data.labels;
     sessionHighChart.data.datasets[0].data = data.highs;
