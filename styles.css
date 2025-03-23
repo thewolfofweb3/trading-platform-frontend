@@ -1,92 +1,127 @@
-/* frontend/public/styles.css */
-@import url('https://fonts.googleapis.com/css2?family=Orbitron&display=swap');
-
 body {
-    font-family: 'Orbitron', sans-serif;
-    background: linear-gradient(135deg, #0B1A2F, #1F2937);
-    color: #E0E7E9;
+    background-color: #0a1a2a;
+    color: #00f7ff;
+    font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
 }
 
 .container {
-    max-width: 1200px; /* Prevents stretching on wide screens */
+    max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
 }
 
-nav {
-    background: #0B1A2F;
+h1 {
+    text-align: center;
+    font-size: 2.5em;
+    margin-bottom: 20px;
+}
+
+.tabs {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.tab {
+    background: none;
+    border: none;
+    color: #00f7ff;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 1.2em;
+}
+
+.tab.active {
+    border-bottom: 2px solid #00f7ff;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.action-btn {
+    background: none;
+    border: 2px solid #00f7ff;
+    color: #00f7ff;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 1.2em;
+    margin: 10px 0;
+    width: 100%;
+    max-width: 300px;
+    display: block;
+    margin: 10px auto;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-group input, .form-group select {
+    width: 100%;
+    max-width: 300px;
+    padding: 8px;
+    background: #1a2a3a;
+    border: 1px solid #00f7ff;
+    color: #00f7ff;
+}
+
+.market-overview, .results {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.market-overview div, .results div {
+    background: #1a2a3a;
     padding: 10px;
     text-align: center;
-}
-
-nav a {
-    color: #00C4B4;
-    margin: 0 15px;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-h1, h2 {
-    color: #00C4B4;
-    text-shadow: 0 0 15px #00C4B4;
-}
-
-form {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    width: 100%;
-    max-width: 500px; /* Keeps form from stretching */
-}
-
-select, input[type="date"], button {
-    padding: 10px;
-    border: 1px solid #00C4B4;
-    border-radius: 5px;
-    background: #1F2937;
-    color: #E0E7E9;
-}
-
-button {
-    background: #00C4B4;
-    color: #0B1A2F;
-    cursor: pointer;
-}
-
-#chart-container {
-    width: 100%;
-    height: 400px;
-    margin-top: 20px;
-    border: 1px solid #00C4B4;
-    box-shadow: 0 0 10px #00C4B4;
+    border: 1px solid #00f7ff;
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 1rem;
+    margin-top: 10px;
 }
 
 th, td {
-    border: 1px solid #00C4B4;
-    padding: 0.5rem;
-    text-align: left;
+    border: 1px solid #00f7ff;
+    padding: 8px;
+    text-align: center;
 }
 
 th {
-    background: linear-gradient(135deg, #1F2937, #374151);
-    color: #D1D5DB;
-    text-shadow: 0 0 5px #00C4B4;
+    background: #1a2a3a;
 }
 
-/* Responsive design */
-@media (max-width: 768px) {
+@media (max-width: 600px) {
     .container {
         padding: 10px;
     }
-    form {
-        max-width: 100%;
+
+    h1 {
+        font-size: 1.5em;
+    }
+
+    .tab {
+        font-size: 1em;
+        padding: 8px 15px;
+    }
+
+    .action-btn {
+        font-size: 1em;
     }
 }
