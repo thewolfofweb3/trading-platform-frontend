@@ -28,10 +28,7 @@ const priceChart = new Chart(document.getElementById('priceChart'), {
 
 async function fetchMarketData() {
     try {
-        const response = await fetch('https://trading-platform-backend-vert.vercel.app/api/market-data', {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' }
-        });
+        const response = await fetch('https://trading-platform-backend-vert.vercel.app/api/market-data');
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}, Response: ${await response.text()}`);
         }
@@ -49,10 +46,7 @@ async function fetchMarketData() {
 
 async function startAutoTrading() {
     try {
-        const response = await fetch('https://trading-platform-backend-vert.vercel.app/api/start-trading', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' }
-        });
+        const response = await fetch('https://trading-platform-backend-vert.vercel.app/api/start-trading', { method: 'POST' });
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}, Response: ${await response.text()}`);
         }
@@ -72,6 +66,8 @@ async function runBacktest() {
         const strategy = document.getElementById('strategy').value;
         const date = document.getElementById('backtestDate').value;
 
+        console.log('Sending backtest request:', { instrument, strategy, date });
+
         const response = await fetch('https://trading-platform-backend-vert.vercel.app/api/backtest', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -82,6 +78,7 @@ async function runBacktest() {
             throw new Error(`HTTP error! Status: ${response.status}, Response: ${errorText}`);
         }
         const data = await response.json();
+        console.log('Backtest response:', data);
         if (!data || typeof data.totalTrades === 'undefined') {
             throw new Error('Invalid response from backend: ' + JSON.stringify(data));
         }
