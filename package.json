@@ -1,0 +1,11 @@
+{
+    "name": "futures-ai-trading-frontend",
+    "version": "1.0.0",
+    "description": "Frontend for Futures AI Trading",
+    "scripts": {
+        "start": "serve ."
+    },
+    "dependencies": {
+        "serve": "^14.2.1"
+    }
+}
