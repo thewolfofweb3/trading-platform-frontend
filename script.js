@@ -1,123 +1,142 @@
-const API_URL = 'https://trading-platform-backend-vert.vercel.app';
-
-let chart, candleSeries;
-const chartContainer = document.getElementById('chart');
-if (chartContainer) {
-    chart = LightweightCharts.createChart(chartContainer, {
-        width: chartContainer.clientWidth,
-        height: 400,
-        layout: { backgroundColor: '#0B1A2F', textColor: '#E0E7E9' },
-        grid: { vertLines: { color: '#2E3A3B' }, horzLines: { color: '#2E3A3B' } },
-        timeScale: { timeVisible: true, secondsVisible: false },
-    });
-    candleSeries = chart.addCandlestickSeries({
-        upColor: '#00C4B4', downColor: '#FF6F61',
-        borderUpColor: '#00C4B4', borderDownColor: '#FF6F61',
-        wickUpColor: '#00C4B4', wickDownColor: '#FF6F61',
-    });
-    loadChartData(new Date(Date.now() - 50 * 5 * 60 * 1000).toISOString().split('T')[0]);
+// Tab switching
+function openTab(tabName) {
+    document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+    document.getElementById(tabName).classList.add('active');
+    document.querySelector(`button[onclick="openTab('${tabName}')"]`).classList.add('active');
 }
 
-async function loadChartData(startDate) {
-    try {
-        const instrument = document.getElementById('instrument')?.value || 'MNQ';
-        const response = await fetch(`${API_URL}/api/candles?startDate=${startDate}&instrument=${instrument}`);
-        const { candles } = await response.json();
-        if (!candles || candles.length === 0) {
-            console.error('No chart data received');
-            return;
-        }
-        const chartData = candles.map(candle => ({
-            time: Math.floor(new Date(candle.time).getTime() / 1000),
-            open: parseFloat(candle.open),
-            high: parseFloat(candle.high),
-            low: parseFloat(candle.low),
-            close: parseFloat(candle.close),
-        }));
-        candleSeries.setData(chartData);
-    } catch (error) {
-        console.error('Error loading chart data:', error);
-    }
+// Chart.js for Market Overview
+const sessionHighChart = new Chart(document.getElementById('sessionHighChart'), {
+    type: 'line',
+    data: {
+        labels: [],
+        datasets: [{
+            label: 'Session High',
+            data: [],
+            borderColor: '#00f7ff',
+            fill: false
+        }]
+    },
+    options: { scales: { y: { beginAtZero: true } } }
+});
+
+const sessionLowChart = new Chart(document.getElementById('sessionLowChart'), {
+    type: 'line',
+    data: {
+        labels: [],
+        datasets: [{
+            label: 'Session Low',
+            data: [],
+            borderColor: '#00f7ff',
+            fill: false
+        }]
+    },
+    options: { scales: { y: { beginAtZero: true } } }
+});
+
+async function fetchMarketData() {
+    const response = await fetch('https://futures-ai-trading-backend.vercel.app/api/market-data');
+    const data = await response.json();
+    sessionHighChart.data.labels = data.labels;
+    sessionHighChart.data.datasets[0].data = data.highs;
+    sessionHighChart.update();
+    sessionLowChart.data.labels = data.labels;
+    sessionLowChart.data.datasets[0].data = data.lows;
+    sessionLowChart.update();
+    document.getElementById('dailyChange').textContent = data.dailyChange + '%';
+    document.getElementById('volume').textContent = data.volume;
 }
 
-if (document.getElementById('backtest-form')) {
-    document.getElementById('backtest-form').addEventListener('submit', async (event) => {
-        event.preventDefault();
-        const instrument = document.getElementById('instrument').value;
-        const startDate = document.getElementById('start-date').value;
-        const strategy = document.getElementById('strategy').value;
-        if (!startDate || !strategy) {
-            alert('Please select a start date and strategy.');
-            return;
-        }
-        try {
-            const response = await fetch(`${API_URL}/api/backtest`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ instrument, startDate, strategy })
-            });
-            const result = await response.json();
-            if (result.error) {
-                document.getElementById('backtest-status').textContent = result.error;
-                return;
-            }
-            document.getElementById('backtest-status').textContent = 'Backtest completed.';
-            document.getElementById('status').textContent = 'Completed';
-            document.getElementById('trades-executed').textContent = result.trades.length;
-            document.getElementById('profit-loss').textContent = `$${result.trades.reduce((sum, trade) => sum + trade.profitLoss, 0).toFixed(2)}`;
-            const tradeIndicators = document.getElementById('trade-indicators');
-            tradeIndicators.innerHTML = result.trades.map(trade => `
-                <tr>
-                    <td class="p-2">${new Date(trade.timestamp).toLocaleString()}</td>
-                    <td class="p-2">${trade.signal}</td>
-                    <td class="p-2">${trade.entryPrice.toFixed(2)}</td>
-                    <td class="p-2">${trade.units}</td>
-                    <td class="p-2">${trade.stopLoss.toFixed(2)}</td>
-                    <td class="p-2">${trade.takeProfit.toFixed(2)}</td>
-                    <td class="p-2">$${trade.profitLoss.toFixed(2)}</td>
-                </tr>
-            `).join('') || '<tr><td colspan="7" class="p-2">No trades executed.</td></tr>';
-        } catch (error) {
-            console.error('Error running backtest:', error);
-            document.getElementById('backtest-status').textContent = 'Error running backtest.';
-        }
+async function startAutoTrading() {
+    const response = await fetch('https://futures-ai-trading-backend.vercel.app/api/start-trading', { method: 'POST' });
+    const data = await response.json();
+    document.getElementById('tradingStatus').textContent = data.status;
+    document.getElementById('todayPerformance').textContent = `$${data.profit} (${data.wins} WINS, ${data.losses} LOSSES)`;
+    updateTradeLog();
+}
+
+async function runBacktest() {
+    const instrument = document.getElementById('instrument').value;
+    const strategy = document.getElementById('strategy').value;
+    const date = document.getElementById('backtestDate').value;
+
+    const response = await fetch('https://futures-ai-trading-backend.vercel.app/api/backtest', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ instrument, strategy, date })
+    });
+    const data = await response.json();
+
+    document.getElementById('totalTrades').textContent = data.totalTrades;
+    document.getElementById('winRate').textContent = data.winRate + '%';
+    document.getElementById('netProfit').textContent = '$' + data.netProfit;
+    document.getElementById('profitFactor').textContent = data.profitFactor;
+}
+
+async function startPaperTrading() {
+    const broker = document.getElementById('paperBroker').value;
+    const apiKey = document.getElementById('paperApiKey').value;
+    const accountId = document.getElementById('paperAccountId').value;
+
+    const response = await fetch('https://futures-ai-trading-backend.vercel.app/api/paper-trade', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ broker, apiKey, accountId })
+    });
+    const data = await response.json();
+    updatePaperTradeLog();
+}
+
+async function runPaperBacktest() {
+    const broker = document.getElementById('paperBroker').value;
+    const apiKey = document.getElementById('paperApiKey').value;
+    const accountId = document.getElementById('paperAccountId').value;
+
+    const response = await fetch('https://futures-ai-trading-backend.vercel.app/api/paper-backtest', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ broker, apiKey, accountId })
+    });
+    const data = await response.json();
+    updatePaperTradeLog();
+}
+
+async function updateTradeLog() {
+    const response = await fetch('https://futures-ai-trading-backend.vercel.app/api/trade-log');
+    const trades = await response.json();
+    const tbody = document.getElementById('tradeLogBody');
+    tbody.innerHTML = '';
+    trades.forEach(trade => {
+        const row = `<tr>
+            <td>${trade.timestamp}</td>
+            <td>${trade.instrument}</td>
+            <td>${trade.signal}</td>
+            <td>${trade.entryPrice}</td>
+            <td>${trade.exitPrice}</td>
+            <td>${trade.profitLoss}</td>
+        </tr>`;
+        tbody.innerHTML += row;
     });
 }
 
-if (document.getElementById('start-trading')) {
-    document.getElementById('start-trading').addEventListener('click', async () => {
-        const instrument = document.getElementById('instrument').value;
-        const strategy = document.getElementById('strategy').value;
-        const tradeLog = document.getElementById('trade-log');
-        tradeLog.innerHTML += `<tr><td class="p-2">${new Date().toLocaleString()}</td><td class="p-2" colspan="6">Trading started with ${strategy} on ${instrument}.</td></tr>`;
-        // Simulate real-time trading (placeholder)
-        const interval = setInterval(async () => {
-            try {
-                const candles = await fetchCandlestickData(instrument, new Date());
-                const signals = strategy === 'ictScalping' ? ictScalpingStrategy(candles) :
-                                strategy === 'maCrossover' ? maCrossoverStrategy(candles) :
-                                bollingerSqueezeStrategy(candles);
-                const trades = simulateTrades(candles, signals);
-                trades.forEach(trade => {
-                    tradeLog.innerHTML += `
-                        <tr>
-                            <td class="p-2">${new Date(trade.timestamp).toLocaleString()}</td>
-                            <td class="p-2">${trade.signal}</td>
-                            <td class="p-2">${trade.entryPrice.toFixed(2)}</td>
-                            <td class="p-2">${trade.units}</td>
-                            <td class="p-2">${trade.stopLoss.toFixed(2)}</td>
-                            <td class="p-2">${trade.takeProfit.toFixed(2)}</td>
-                            <td class="p-2">$${trade.profitLoss.toFixed(2)}</td>
-                        </tr>
-                    `;
-                });
-            } catch (error) {
-                console.error('Error during auto-trading:', error);
-            }
-        }, 5 * 60 * 1000); // Every 5 minutes
-        document.getElementById('stop-trading').addEventListener('click', () => {
-            clearInterval(interval);
-            tradeLog.innerHTML += `<tr><td class="p-2">${new Date().toLocaleString()}</td><td class="p-2" colspan="6">Trading stopped.</td></tr>`;
-        }, { once: true });
+async function updatePaperTradeLog() {
+    const response = await fetch('https://futures-ai-trading-backend.vercel.app/api/paper-trade-log');
+    const trades = await response.json();
+    const tbody = document.getElementById('paperTradeLogBody');
+    tbody.innerHTML = '';
+    trades.forEach(trade => {
+        const row = `<tr>
+            <td>${trade.timestamp}</td>
+            <td>${trade.instrument}</td>
+            <td>${trade.signal}</td>
+            <td>${trade.entryPrice}</td>
+            <td>${trade.exitPrice}</td>
+            <td>${trade.profitLoss}</td>
+        </tr>`;
+        tbody.innerHTML += row;
     });
 }
+
+// Fetch market data on load
+fetchMarketData();
