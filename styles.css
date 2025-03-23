@@ -1,21 +1,18 @@
 body {
-    background-color: #0a1a2a;
-    color: #00f7ff;
     font-family: Arial, sans-serif;
+    background-color: #1a1a2e;
+    color: #e0e0e0;
     margin: 0;
-    padding: 0;
-}
-
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
     padding: 20px;
 }
 
 h1 {
+    color: #00f7ff;
     text-align: center;
-    font-size: 2.5em;
-    margin-bottom: 20px;
+}
+
+h2 {
+    color: #00f7ff;
 }
 
 .tabs {
@@ -25,16 +22,18 @@ h1 {
 }
 
 .tab {
-    background: none;
+    background-color: #16213e;
+    color: #e0e0e0;
     border: none;
-    color: #00f7ff;
     padding: 10px 20px;
+    margin: 0 5px;
     cursor: pointer;
-    font-size: 1.2em;
+    transition: background-color 0.3s;
 }
 
 .tab.active {
-    border-bottom: 2px solid #00f7ff;
+    background-color: #00f7ff;
+    color: #1a1a2e;
 }
 
 .tab-content {
@@ -45,83 +44,63 @@ h1 {
     display: block;
 }
 
-.action-btn {
-    background: none;
-    border: 2px solid #00f7ff;
-    color: #00f7ff;
-    padding: 10px 20px;
-    cursor: pointer;
-    font-size: 1.2em;
-    margin: 10px 0;
-    width: 100%;
-    max-width: 300px;
-    display: block;
-    margin: 10px auto;
+canvas {
+    max-width: 100%;
+    margin: 20px 0;
 }
 
-.form-group {
-    margin-bottom: 15px;
+.results {
+    display: flex;
+    justify-content: space-around;
+    margin: 20px 0;
 }
 
-.form-group label {
-    display: block;
-    margin-bottom: 5px;
-}
-
-.form-group input, .form-group select {
-    width: 100%;
-    max-width: 300px;
-    padding: 8px;
-    background: #1a2a3a;
+.result-box {
+    background-color: #16213e;
     border: 1px solid #00f7ff;
-    color: #00f7ff;
-}
-
-.market-overview, .results {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
-.market-overview div, .results div {
-    background: #1a2a3a;
-    padding: 10px;
+    padding: 20px;
     text-align: center;
-    border: 1px solid #00f7ff;
+    width: 20%;
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 10px;
+    margin: 20px 0;
 }
 
 th, td {
     border: 1px solid #00f7ff;
-    padding: 8px;
+    padding: 10px;
     text-align: center;
 }
 
 th {
-    background: #1a2a3a;
+    background-color: #16213e;
 }
 
-@media (max-width: 600px) {
-    .container {
-        padding: 10px;
-    }
+label {
+    display: inline-block;
+    margin: 10px 0 5px;
+}
 
-    h1 {
-        font-size: 1.5em;
-    }
+input, select {
+    background-color: #16213e;
+    color: #e0e0e0;
+    border: 1px solid #00f7ff;
+    padding: 5px;
+    margin-bottom: 10px;
+}
 
-    .tab {
-        font-size: 1em;
-        padding: 8px 15px;
-    }
+button {
+    background-color: #00f7ff;
+    color: #1a1a2e;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
 
-    .action-btn {
-        font-size: 1em;
-    }
+button:hover {
+    background-color: #00d4dd;
 }
