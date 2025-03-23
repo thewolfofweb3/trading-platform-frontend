@@ -3,66 +3,183 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trading Dashboard</title>
-    <script src="https://unpkg.com/lightweight-charts@4.1.0/dist/lightweight-charts.standalone.production.js"></script>
+    <title>Futures AI Trading</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body class="bg-[#1F2937] text-[#FFFFFF]">
-    <nav class="bg-[#374151] p-4">
-        <ul class="flex space-x-4">
-            <li><a href="index.html" class="text-[#42A5F5] hover:text-blue-400">Dashboard</a></li>
-            <li><a href="backtest.html" class="text-[#42A5F5] hover:text-blue-400">Backtest</a></li>
-            <li><a href="settings.html" class="text-[#42A5F5] hover:text-blue-400">Settings</a></li>
-        </ul>
-    </nav>
-    <div class="container mx-auto p-6">
-        <h1 class="text-3xl mb-6">Trading Dashboard</h1>
-        <div class="bg-[#374151] p-6 rounded-lg shadow-lg border border-[#00C4B4] border-opacity-20 mb-6">
-            <h2 class="text-xl mb-4 text-[#D1D5DB]">MNQ/MES 5-Minute Chart</h2>
-            <div id="chart" style="width: 100%; height: 400px;"></div>
+<body>
+    <div class="container">
+        <h1>FUTURES AI TRADING</h1>
+        <div class="tabs">
+            <button class="tab active" onclick="openTab('dashboard')">Dashboard</button>
+            <button class="tab" onclick="openTab('backtesting')">Backtesting</button>
+            <button class="tab" onclick="openTab('paperTrading')">Paper Trading</button>
+            <button class="tab" onclick="openTab('settings')">Settings</button>
         </div>
-        <div class="bg-[#374151] p-6 rounded-lg shadow-lg border border-[#00C4B4] border-opacity-20">
-            <h2 class="text-xl mb-4 text-[#D1D5DB]">Control Panel</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+
+        <!-- Dashboard Tab -->
+        <div id="dashboard" class="tab-content active">
+            <button class="action-btn" onclick="startAutoTrading()">START AUTO-TRADING</button>
+            <h2>Market Overview</h2>
+            <div class="market-overview">
                 <div>
-                    <label class="block mb-2 text-[#D1D5DB]">Instrument:</label>
-                    <select id="instrument" class="bg-[#1F2937] p-2 rounded w-full text-[#FFFFFF] border border-[#00C4B4]">
-                        <option value="MNQ">MNQ</option>
-                        <option value="MES">MES</option>
-                    </select>
+                    <p>Session High</p>
+                    <canvas id="sessionHighChart" width="200" height="100"></canvas>
                 </div>
                 <div>
-                    <label class="block mb-2 text-[#D1D5DB]">Strategy:</label>
-                    <select id="strategy" class="bg-[#1F2937] p-2 rounded w-full text-[#FFFFFF] border border-[#00C4B4]">
-                        <option value="ictScalping">ICT Scalping</option>
-                        <option value="maCrossover">Moving Average Crossover</option>
-                        <option value="bollingerSqueeze">Bollinger Band Squeeze</option>
-                    </select>
+                    <p>Session Low</p>
+                    <canvas id="sessionLowChart" width="200" height="100"></canvas>
                 </div>
                 <div>
-                    <button id="start-trading" class="bg-[#00C4B4] hover:shadow-[0_0_15px_#26D0CE] p-2 rounded w-full text-[#1F2937]">Start Auto-Trading</button>
-                    <button id="stop-trading" class="bg-[#FF6F61] hover:shadow-[0_0_15px_#FF8A80] p-2 rounded w-full text-[#1F2937] mt-2">Stop Trading</button>
+                    <p>Daily Change</p>
+                    <p id="dailyChange">--.--%</p>
+                </div>
+                <div>
+                    <p>Volume</p>
+                    <p id="volume">-----</p>
+                </div>
+                <div>
+                    <p>Trading Status</p>
+                    <p id="tradingStatus">Trading Paused</p>
+                </div>
+                <div>
+                    <p>Today's Performance</p>
+                    <p id="todayPerformance">$0 (0 WINS, 0 LOSSES)</p>
+                </div>
+            </div>
+            <h2>Trade Log</h2>
+            <table id="tradeLog">
+                <thead>
+                    <tr>
+                        <th>TIMESTAMP</th>
+                        <th>INSTRUMENT</th>
+                        <th>SIGNAL</th>
+                        <th>ENTRY PRICE</th>
+                        <th>EXIT PRICE</th>
+                        <th>PROFIT/LOSS</th>
+                    </tr>
+                </thead>
+                <tbody id="tradeLogBody"></tbody>
+            </table>
+        </div>
+
+        <!-- Backtesting Tab -->
+        <div id="backtesting" class="tab-content">
+            <h2>Backtest Configuration</h2>
+            <div class="form-group">
+                <label>Instrument</label>
+                <select id="instrument">
+                    <option>MES1 (Micro E-mini S&P 500)</option>
+                    <option>MNQ1 (Micro E-mini Nasdaq-100)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Strategy</label>
+                <select id="strategy">
+                    <option>ICT Trading</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Date</label>
+                <input type="date" id="backtestDate" value="2024-10-01">
+            </div>
+            <button class="action-btn" onclick="runBacktest()">RUN BACKTEST</button>
+            <h2>Backtest Results</h2>
+            <div class="results">
+                <div>
+                    <p>TOTAL TRADES</p>
+                    <p id="totalTrades">0</p>
+                </div>
+                <div>
+                    <p>WIN RATE</p>
+                    <p id="winRate">0.00%</p>
+                </div>
+                <div>
+                    <p>NET PROFIT</p>
+                    <p id="netProfit">$0</p>
+                </div>
+                <div>
+                    <p>PROFIT FACTOR</p>
+                    <p id="profitFactor">0.00</p>
                 </div>
             </div>
         </div>
-        <div class="bg-[#374151] p-6 rounded-lg shadow-lg mt-6 border border-[#00C4B4] border-opacity-20">
-            <h2 class="text-xl mb-4 text-[#D1D5DB]">Trade Log</h2>
-            <table class="w-full text-left">
+
+        <!-- Paper Trading Tab -->
+        <div id="paperTrading" class="tab-content">
+            <h2>Paper Trading Configuration</h2>
+            <div class="form-group">
+                <label>Broker</label>
+                <select id="paperBroker">
+                    <option>Tradovate</option>
+                    <option>WealthCharts</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>API Key</label>
+                <input type="text" id="paperApiKey" placeholder="Enter your API Key">
+            </div>
+            <div class="form-group">
+                <label>Account ID</label>
+                <input type="text" id="paperAccountId" placeholder="Enter your Account ID">
+            </div>
+            <button class="action-btn" onclick="startPaperTrading()">START PAPER TRADING</button>
+            <button class="action-btn" onclick="runPaperBacktest()">RUN PAPER BACKTEST</button>
+            <h2>Paper Trading Log</h2>
+            <table id="paperTradeLog">
                 <thead>
-                    <tr class="text-[#D1D5DB]">
-                        <th class="p-2">Timestamp</th>
-                        <th class="p-2">Signal</th>
-                        <th class="p-2">Entry Price</th>
-                        <th class="p-2">Units</th>
-                        <th class="p-2">Stop Loss</th>
-                        <th class="p-2">Take Profit</th>
-                        <th class="p-2">Profit/Loss</th>
+                    <tr>
+                        <th>TIMESTAMP</th>
+                        <th>INSTRUMENT</th>
+                        <th>SIGNAL</th>
+                        <th>ENTRY PRICE</th>
+                        <th>EXIT PRICE</th>
+                        <th>PROFIT/LOSS</th>
                     </tr>
                 </thead>
-                <tbody id="trade-log"></tbody>
+                <tbody id="paperTradeLogBody"></tbody>
             </table>
         </div>
+
+        <!-- Settings Tab -->
+        <div id="settings" class="tab-content">
+            <h2>API Configuration</h2>
+            <div class="form-group">
+                <label>Broker</label>
+                <select id="broker">
+                    <option>Tradovate</option>
+                    <option>WealthCharts</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>API Key</label>
+                <input type="text" id="apiKey" placeholder="Enter your API Key">
+            </div>
+            <div class="form-group">
+                <label>Account ID</label>
+                <input type="text" id="accountId" placeholder="Enter your Account ID">
+            </div>
+            <h2>Risk Management</h2>
+            <div class="form-group">
+                <label>Daily Loss Cap ($)</label>
+                <input type="number" id="dailyLossCap" value="5000">
+            </div>
+            <div class="form-group">
+                <label>Daily Win Cap ($)</label>
+                <input type="number" id="dailyWinCap" value="9000">
+            </div>
+            <div class="form-group">
+                <label>Max Trades Per Day</label>
+                <input type="number" id="maxTradesPerDay" value="3">
+            </div>
+            <div class="form-group">
+                <label>Default Strategy</label>
+                <select id="defaultStrategy">
+                    <option>ICT Trading</option>
+                </select>
+            </div>
+        </div>
     </div>
-    <script src="script.js"></script>
+    <script src="scripts.js"></script>
 </body>
 </html>
