@@ -232,5 +232,11 @@ async function updatePaperTradeLog() {
     }
 }
 
+function saveSettings() {
+    const apiKey = document.getElementById('apiKey').value;
+    localStorage.setItem('apiKey', apiKey);
+    alert('Settings saved!');
+}
+
 // Fetch market data on load
 fetchMarketData();
