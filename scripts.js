@@ -6,13 +6,16 @@ function openTab(tabName) {
     document.querySelector(`button[onclick="openTab('${tabName}')"]`).classList.add('active');
 }
 
-// Candlestick Chart for Market Overview
-const candlestickChart = new Chart(document.getElementById('candlestickChart'), {
-    type: 'candlestick',
+// Line Chart for Market Overview
+const priceChart = new Chart(document.getElementById('priceChart'), {
+    type: 'line',
     data: {
+        labels: [],
         datasets: [{
-            label: 'MES1 Candlesticks',
-            data: []
+            label: 'MES1 Closing Price',
+            data: [],
+            borderColor: '#00f7ff',
+            fill: false
         }]
     },
     options: {
@@ -26,16 +29,14 @@ const candlestickChart = new Chart(document.getElementById('candlestickChart'), 
 async function fetchMarketData() {
     try {
         const response = await fetch('https://trading-platform-backend-vert.vercel.app/api/market-data');
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
         const data = await response.json();
-        // Update candlestick chart
-        candlestickChart.data.datasets[0].data = data.candles.map(candle => ({
-            x: new Date(candle.t),
-            o: candle.open,
-            h: candle.high,
-            l: candle.low,
-            c: candle.close
-        }));
-        candlestickChart.update();
+        // Update line chart with closing prices
+        priceChart.data.labels = data.candles.map(candle => new Date(candle.t).toLocaleTimeString());
+        priceChart.data.datasets[0].data = data.candles.map(candle => candle.close);
+        priceChart.update();
         document.getElementById('dailyChange').textContent = data.dailyChange + '%';
         document.getElementById('volume').textContent = data.volume;
     } catch (error) {
@@ -46,6 +47,9 @@ async function fetchMarketData() {
 async function startAutoTrading() {
     try {
         const response = await fetch('https://trading-platform-backend-vert.vercel.app/api/start-trading', { method: 'POST' });
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
         const data = await response.json();
         document.getElementById('tradingStatus').textContent = data.status;
         document.getElementById('todayPerformance').textContent = `$${data.profit} (${data.wins} WINS, ${data.losses} LOSSES)`;
@@ -67,12 +71,19 @@ async function runBacktest() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ instrument, strategy, date })
         });
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`HTTP error! Status: ${response.status}, Response: ${errorText}`);
+        }
         const data = await response.json();
+        if (!data || typeof data.totalTrades === 'undefined') {
+            throw new Error('Invalid response from backend: ' + JSON.stringify(data));
+        }
 
-        document.getElementById('totalTrades').textContent = data.totalTrades;
-        document.getElementById('winRate').textContent = data.winRate + '%';
-        document.getElementById('netProfit').textContent = '$' + data.netProfit;
-        document.getElementById('profitFactor').textContent = data.profitFactor;
+        document.getElementById('totalTrades').textContent = data.totalTrades || 0;
+        document.getElementById('winRate').textContent = data.winRate ? data.winRate + '%' : '0.00%';
+        document.getElementById('netProfit').textContent = '$' + (data.netProfit || 0);
+        document.getElementById('profitFactor').textContent = data.profitFactor || '0.00';
         updateBacktestTradeLog();
     } catch (error) {
         console.error('Error running backtest:', error);
@@ -91,6 +102,9 @@ async function startPaperTrading() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ broker, apiKey, accountId })
         });
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
         const data = await response.json();
         document.getElementById('paperTradingPnL').textContent = `$${data.netProfit}`;
         updatePaperTradeLog();
@@ -110,6 +124,9 @@ async function runPaperBacktest() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ broker, apiKey, accountId })
         });
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
         const data = await response.json();
         document.getElementById('paperTradingPnL').textContent = `$${data.netProfit}`;
         updatePaperTradeLog();
@@ -121,6 +138,9 @@ async function runPaperBacktest() {
 async function updateTradeLog() {
     try {
         const response = await fetch('https://trading-platform-backend-vert.vercel.app/api/trade-log');
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
         const trades = await response.json();
         const tbody = document.getElementById('tradeLogBody');
         tbody.innerHTML = '';
@@ -144,6 +164,9 @@ async function updateTradeLog() {
 async function updateBacktestTradeLog() {
     try {
         const response = await fetch('https://trading-platform-backend-vert.vercel.app/api/backtest-trade-log');
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
         const trades = await response.json();
         const tbody = document.getElementById('backtestTradeLogBody');
         tbody.innerHTML = '';
@@ -167,6 +190,9 @@ async function updateBacktestTradeLog() {
 async function updatePaperTradeLog() {
     try {
         const response = await fetch('https://trading-platform-backend-vert.vercel.app/api/paper-trade-log');
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
         const trades = await response.json();
         const tbody = document.getElementById('paperTradeLogBody');
         tbody.innerHTML = '';
