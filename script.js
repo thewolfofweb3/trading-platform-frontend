@@ -36,7 +36,7 @@ const sessionLowChart = new Chart(document.getElementById('sessionLowChart'), {
 });
 
 async function fetchMarketData() {
-    const response = await fetch('https://futures-ai-trading-backend.vercel.app/api/market-data');
+    const response = await fetch('');
     const data = await response.json();
     sessionHighChart.data.labels = data.labels;
     sessionHighChart.data.datasets[0].data = data.highs;
