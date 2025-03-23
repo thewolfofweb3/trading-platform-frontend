@@ -28,11 +28,13 @@ const priceChart = new Chart(document.getElementById('priceChart'), {
 
 async function fetchMarketData() {
     try {
+        console.log('Fetching market data from https://trading-platform-backend-vert.vercel.app/api/market-data');
         const response = await fetch('https://trading-platform-backend-vert.vercel.app/api/market-data');
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}, Response: ${await response.text()}`);
         }
         const data = await response.json();
+        console.log('Market data response:', data);
         // Update line chart with closing prices
         priceChart.data.labels = data.candles.map(candle => new Date(candle.t).toLocaleTimeString());
         priceChart.data.datasets[0].data = data.candles.map(candle => candle.close);
@@ -46,11 +48,13 @@ async function fetchMarketData() {
 
 async function startAutoTrading() {
     try {
+        console.log('Starting auto-trading');
         const response = await fetch('https://trading-platform-backend-vert.vercel.app/api/start-trading', { method: 'POST' });
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}, Response: ${await response.text()}`);
         }
         const data = await response.json();
+        console.log('Auto-trading response:', data);
         document.getElementById('tradingStatus').textContent = data.status;
         document.getElementById('todayPerformance').textContent = `$${data.profit} (${data.wins} WINS, ${data.losses} LOSSES)`;
         document.getElementById('dashboardPnL').textContent = `$${data.profit}`;
@@ -100,6 +104,8 @@ async function startPaperTrading() {
         const apiKey = document.getElementById('paperApiKey').value;
         const accountId = document.getElementById('paperAccountId').value;
 
+        console.log('Starting paper trading:', { broker, apiKey, accountId });
+
         const response = await fetch('https://trading-platform-backend-vert.vercel.app/api/paper-trade', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -109,6 +115,7 @@ async function startPaperTrading() {
             throw new Error(`HTTP error! Status: ${response.status}, Response: ${await response.text()}`);
         }
         const data = await response.json();
+        console.log('Paper trading response:', data);
         document.getElementById('paperTradingPnL').textContent = `$${data.netProfit}`;
         updatePaperTradeLog();
     } catch (error) {
@@ -122,6 +129,8 @@ async function runPaperBacktest() {
         const apiKey = document.getElementById('paperApiKey').value;
         const accountId = document.getElementById('paperAccountId').value;
 
+        console.log('Running paper backtest:', { broker, apiKey, accountId });
+
         const response = await fetch('https://trading-platform-backend-vert.vercel.app/api/paper-backtest', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -131,6 +140,7 @@ async function runPaperBacktest() {
             throw new Error(`HTTP error! Status: ${response.status}, Response: ${await response.text()}`);
         }
         const data = await response.json();
+        console.log('Paper backtest response:', data);
         document.getElementById('paperTradingPnL').textContent = `$${data.netProfit}`;
         updatePaperTradeLog();
     } catch (error) {
@@ -140,11 +150,13 @@ async function runPaperBacktest() {
 
 async function updateTradeLog() {
     try {
+        console.log('Fetching trade log');
         const response = await fetch('https://trading-platform-backend-vert.vercel.app/api/trade-log');
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}, Response: ${await response.text()}`);
         }
         const trades = await response.json();
+        console.log('Trade log response:', trades);
         const tbody = document.getElementById('tradeLogBody');
         tbody.innerHTML = '';
         trades.forEach(trade => {
@@ -166,11 +178,13 @@ async function updateTradeLog() {
 
 async function updateBacktestTradeLog() {
     try {
+        console.log('Fetching backtest trade log');
         const response = await fetch('https://trading-platform-backend-vert.vercel.app/api/backtest-trade-log');
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}, Response: ${await response.text()}`);
         }
         const trades = await response.json();
+        console.log('Backtest trade log response:', trades);
         const tbody = document.getElementById('backtestTradeLogBody');
         tbody.innerHTML = '';
         trades.forEach(trade => {
@@ -192,11 +206,13 @@ async function updateBacktestTradeLog() {
 
 async function updatePaperTradeLog() {
     try {
+        console.log('Fetching paper trade log');
         const response = await fetch('https://trading-platform-backend-vert.vercel.app/api/paper-trade-log');
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}, Response: ${await response.text()}`);
         }
         const trades = await response.json();
+        console.log('Paper trade log response:', trades);
         const tbody = document.getElementById('paperTradeLogBody');
         tbody.innerHTML = '';
         trades.forEach(trade => {
